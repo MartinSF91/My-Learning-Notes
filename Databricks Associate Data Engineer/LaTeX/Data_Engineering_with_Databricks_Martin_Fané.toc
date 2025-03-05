@@ -1,0 +1,74 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Data Lakehouse}{3}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Data Ingestion}{3}{subsection.1.1}%
+\contentsline {section}{\numberline {2}Delta Lake}{3}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Key Features}{3}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}Change Data Capture (CDC)}{4}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}Change Data Feed (CDF)}{4}{subsection.2.3}%
+\contentsline {section}{\numberline {3}Workflows}{5}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Compute}{5}{subsection.3.1}%
+\contentsline {subsubsection}{\numberline {3.1.1}Job (Automated) Cluster}{5}{subsubsection.3.1.1}%
+\contentsline {subsubsection}{\numberline {3.1.2}All-purpose (Interactive) Cluster}{5}{subsubsection.3.1.2}%
+\contentsline {subsubsection}{\numberline {3.1.3}Other}{5}{subsubsection.3.1.3}%
+\contentsline {subsection}{\numberline {3.2}Cluster}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Jobs Features}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Late Jobs}{6}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Run Job Task Type}{6}{subsection.3.5}%
+\contentsline {subsection}{\numberline {3.6}Databricks Asset Bundle (DAB)}{6}{subsection.3.6}%
+\contentsline {subsection}{\numberline {3.7}Best Practices}{6}{subsection.3.7}%
+\contentsline {section}{\numberline {4}Delta Lake Table}{7}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Anatomy}{7}{subsection.4.1}%
+\contentsline {section}{\numberline {5}Optimizing Delta Lake Tables}{8}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Summary}{8}{subsection.5.1}%
+\contentsline {section}{\numberline {6}Delta Live Table}{9}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Key Features}{9}{subsection.6.1}%
+\contentsline {subsubsection}{\numberline {6.1.1}Medaillon Architecture}{9}{subsubsection.6.1.1}%
+\contentsline {subsection}{\numberline {6.2}Data Quality and Validation Rules}{10}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Types of Exception Handling Actions and Syntax}{10}{subsection.6.3}%
+\contentsline {section}{\numberline {7}Data Governance with Unity Catalog}{11}{section.7}%
+\contentsline {subsection}{\numberline {7.1}Unity Catalog}{11}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}Create and Manage Catalogs, Schemas, Volumes and Tables using UC}{11}{subsection.7.2}%
+\contentsline {subsubsection}{\numberline {7.2.1}Metastore}{11}{subsubsection.7.2.1}%
+\contentsline {subsubsection}{\numberline {7.2.2}Catalog}{11}{subsubsection.7.2.2}%
+\contentsline {subsubsection}{\numberline {7.2.3}Table}{11}{subsubsection.7.2.3}%
+\contentsline {subsubsection}{\numberline {7.2.4}Volume}{12}{subsubsection.7.2.4}%
+\contentsline {subsubsection}{\numberline {7.2.5}View}{12}{subsubsection.7.2.5}%
+\contentsline {subsection}{\numberline {7.3}Define Access Control Policies in UC}{12}{subsection.7.3}%
+\contentsline {subsection}{\numberline {7.4}Data Lineage}{13}{subsection.7.4}%
+\contentsline {subsection}{\numberline {7.5}Accessing System Tables}{13}{subsection.7.5}%
+\contentsline {section}{\numberline {8}Performance Tuning in Delta Lake}{13}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Avoiding Small File Problem}{13}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Table Statistics}{13}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Predictive Optimization}{13}{subsection.8.3}%
+\contentsline {section}{\numberline {9}Performance Optimization with Spark}{14}{section.9}%
+\contentsline {subsection}{\numberline {9.1}Broadcast Variables}{14}{subsection.9.1}%
+\contentsline {subsubsection}{\numberline {9.1.1}Limitations and Best Practice}{14}{subsubsection.9.1.1}%
+\contentsline {subsection}{\numberline {9.2}Minimize Data Shuffling}{14}{subsection.9.2}%
+\contentsline {subsection}{\numberline {9.3}Avoiding Data Skew}{15}{subsection.9.3}%
+\contentsline {subsection}{\numberline {9.4}Caching and Persistence}{15}{subsection.9.4}%
+\contentsline {subsection}{\numberline {9.5}Partitioning and Repartitioning}{15}{subsection.9.5}%
+\contentsline {section}{\numberline {10}Spark Structured Streaming}{16}{section.10}%
+\contentsline {subsection}{\numberline {10.1}Process}{16}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}Ingesting Streaming Data}{16}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}Reading from real-time Sources (\texttt {Kafka})}{17}{subsection.10.3}%
+\contentsline {section}{\numberline {11}Processing Streaming Data}{18}{section.11}%
+\contentsline {section}{\numberline {12}SQL Coding}{19}{section.12}%
+\contentsline {subsection}{\numberline {12.1}Delta Table}{19}{subsection.12.1}%
+\contentsline {subsubsection}{\numberline {12.1.1}Creating a Delta Table or View}{19}{subsubsection.12.1.1}%
+\contentsline {subsubsection}{\numberline {12.1.2}Reading a Delta Table}{19}{subsubsection.12.1.2}%
+\contentsline {subsubsection}{\numberline {12.1.3}Optimizing Delta Tables}{20}{subsubsection.12.1.3}%
+\contentsline {subsubsection}{\numberline {12.1.4}Tagging, Commenting, and Capturing Metadata}{20}{subsubsection.12.1.4}%
+\contentsline {subsection}{\numberline {12.2}Delta Live Table}{22}{subsection.12.2}%
+\contentsline {subsubsection}{\numberline {12.2.1}Data Quality and Validation Rules}{22}{subsubsection.12.2.1}%
+\contentsline {subsection}{\numberline {12.3}Unity Catalog}{23}{subsection.12.3}%
+\contentsline {subsubsection}{\numberline {12.3.1}Create Catalog, Volume, View}{23}{subsubsection.12.3.1}%
+\contentsline {subsubsection}{\numberline {12.3.2}Row Filtering}{23}{subsubsection.12.3.2}%
+\contentsline {subsubsection}{\numberline {12.3.3}Column Masking}{24}{subsubsection.12.3.3}%
+\contentsline {section}{\numberline {13}Python Coding}{25}{section.13}%
+\contentsline {subsection}{\numberline {13.1}Delta Table}{25}{subsection.13.1}%
+\contentsline {subsubsection}{\numberline {13.1.1}Creating a Delta Table}{25}{subsubsection.13.1.1}%
+\contentsline {subsubsection}{\numberline {13.1.2}Reading a Delta Table}{26}{subsubsection.13.1.2}%
+\contentsline {subsubsection}{\numberline {13.1.3}Optimizing Delta Tables}{27}{subsubsection.13.1.3}%
+\contentsline {subsection}{\numberline {13.2}Delta Live Table}{27}{subsection.13.2}%
+\contentsline {subsection}{\numberline {13.3}Streaming}{27}{subsection.13.3}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

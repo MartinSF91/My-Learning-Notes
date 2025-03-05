@@ -1,0 +1,235 @@
+
+\documentclass[11pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{ucs}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption} 		% Subfigures
+\usepackage{hyperref}
+\usepackage{fullpage}	
+\usepackage{color}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\usepackage[font=footnotesize]{caption}
+\usepackage{draftwatermark}
+\SetWatermarkText{Martin Fané}
+\SetWatermarkScale{3}
+\SetWatermarkColor[gray]{0.99}
+\usepackage[numindex,nottoc,section]{} 
+
+
+\def\Reg{\textsuperscript{\textregistered}}	% Registered Zeichen
+\def\TM{\textsuperscript{\texttrademark}}	% Trademark Zeichen
+\def\CR{\textsuperscript{\textcopyright}}	% Copyright Zeichen
+
+
+\usepackage{listings, xcolor}
+\lstset
+{	
+	language     = Python,
+	basicstyle   = \ttfamily,
+	keywordstyle = \color{blue}\ttfamily,
+	stringstyle  = \color{orange}\ttfamily,
+	commentstyle = \color{green}\ttfamily,
+	morecomment  = [l][\color{teal}]{\#},
+	%	backgroundcolor = \color{lightgray}\ttfamily,
+	breaklines=true,
+	tabsize=3,
+	numbers=left,
+	numberstyle=\color{black},
+	numbersep=5pt, 
+	frame=single
+}
+
+\begin{document}
+\begin{itemize}
+	\item Tasks not supported by DB repos (done by GIT provider):
+	\begin{itemize}
+		\item create PR
+		\item delete, merge and rebase branches
+		\item review process
+	\end{itemize}
+	\item Task supported by DB repos:
+	\begin{itemize}
+		\item commit, push, pull, clone
+		\item trigger a CI/CD process
+		\item create and work with new branches
+		\item add comments and select the changes to commit
+		\item allow for full Git integration, including branching and merging, which is not directly supported within notebooks
+		\item support larger file sizes for version control compared to Notebooks
+	\end{itemize}
+	\item Dropping tables:
+	\begin{itemize}
+		\item \texttt{managed table}: drop table definition from metastore, data, metadata, and history from storage
+		\item \texttt{external table}: drop table from metastore, keep metadata, data, and history in storage
+	\end{itemize}
+	\item Workspace level: classic access control list for tables, workspace, cluster
+	\item Account level: Unity catalog to manage all the workspaces in an account 
+	\item A job cluster can not provide a way for a user to interact with a notebook once the job is submitted, but an interactive cluster allows to you display data, view visualizations write or edit quries, which makes it a perfect fit to investigate and analyze the data
+	\item All of the data is broken down into one or many parquet files, log files are broken down into one or many JSON files, and each transaction creates a new data file and log file.
+	\item \texttt{Control Plane}
+	\begin{itemize}
+		\item Stored in DB Cloud Account
+		\item Manages user accounts, data sets, and clusters
+		\item Include backend services
+		\item Clusters and workspace configurations
+		\item User authentication and access control
+		\item DB Web Applications
+		\item Customer Managed Cloud Storage
+		\item Interactive notebook results
+	\end{itemize}
+	\item \texttt{Data plane} contains
+	\begin{itemize}
+		\item Customer data
+		\item Hosts the driver and worker nodes of a managed cluster
+		\item Main components: Workspaces and SQL Warehouses
+		\item Deploys the cluster's virtual machines
+		\item Runs in the Customer Cloud Account
+	\end{itemize}
+	\item Create external table with \\ \texttt{CREATE TABLE <table> (...) USING DELTA LOCATION EXTERNAL}
+	\item \texttt{MERGE INTO <table> AS ... USING SELECT ...}
+	\item Upgrade existing \texttt{managed table} to a Unity Catalog table with \\ \texttt{CREATE OR REPLACE TABLE <table> FORMAT = UNITY USING DEEP CLONE <old\_table>}
+	\item Data Lakehouse cannot serve low query latency with high reliability for BI workloads, only suitable for batch workloads
+	\item \texttt{SHALLOW CLONE}: Create a copy of a table and transaction logs quickly to test out applying changes without the risk of modifying the current table
+	\item \texttt{DEEP CLONE}: Fully copies data and metadata from a source table to a target
+	\item \texttt{complete mode}: write stream data into target table, the table is overwritten for each batch
+	\item Restore table:
+	\begin{itemize}
+		\item \texttt{RESTORE TABLE <table> TO VERSION AS OF <version>}
+		\item \texttt{RESTORE [TABLE] <table> [ON] TIMESTAMP AS OF timestamp\_expression} 
+	\end{itemize} 
+	\item \texttt{COPY INTO} does not detect new files after the last load
+	\item \texttt{INSERT OVERWRITE} replaces data by default, \texttt{CREATE OR REPLACE} replaces data and schema by default
+	\item DLT pipeline in \texttt{production}:
+	\begin{itemize}
+		\item \texttt{continuous mode}: all datasets will be updated continuously and the pipeline will not shut down. The compute resources will persist with the pipeline
+		\item \texttt{triggered mode}: all datasets will be updated once and the pipeline will shut down. The compute resources will persist to allow additional development and testing
+	\end{itemize}
+	\item DLT pipeline in \texttt{development} using the \texttt{triggered mode}: DLT pipeline is designed to process the available data once per trigger rather than continuously. After clicking start, the pipeline processes any previously unprocessed data based on the current definitions. Once this batch of data is processed, the pipeline does not actively seek new data until it is triggered again, effectively making it shut down from an active processing perspective
+	\item Setup an alert but use the custom template to notify the message in email's subject every time a KPI indicator increases beyond a threshold value
+	\item \texttt{mergeSchema} instructs Spark to merge the schema of new data with the existing schema of the table. This allows for incremental updates and schema evolution.
+	\item Prepend the \texttt{LIVE.} keyword to table name in DLT pipelines to create a table with SQL
+	\item \texttt{FROM STREAM(LIVE.<another\_table>)} to stream data from another live table
+	\item Cluster size improves query latency
+	\item Using the JDBC library (\texttt{org.apache.spark.sql.jdbc}), Spark SQL can extract data from any existing relational database that supports JDBC
+	\item The events described in the question represent Change Data Capture (CDC) feed. CDC is logged at the source as events that contain both the data of the records along with metadata information:
+	\begin{itemize}
+		\item Operation column indicating whether the specified record was inserted, updated, or deleted
+		\item Sequence column that is usually a timestamp indicating the order in which the changes happened. 
+		\item Use \texttt{APPLY CHANGES INTO} statement to use DLT CDC functionality
+	\end{itemize}
+	\item Use \texttt{job clusters} in \texttt{production} so that each job runs in a fully isolated environment
+	\item In DB SQL, you can set a schedule to automatically refresh a query from the query's page
+	\item \texttt{Data Explorer} in DB SQL:
+	\begin{itemize}
+		\item review and change the owner of the table from Owner field
+		\item provides detailed information about tables, including metadata like the owner of the table
+	\end{itemize}
+	\item DB SQL is a data warehouse on the DB Lakehouse platform that lets you run all your SQL and BI applications at scale
+	\item \texttt{CREATE TABLE USING} allows to specify an external data source type like CSV format
+	\item Specifying at least one notebook or library with the defined DLT syntax is mandatory for the creation and execution of a DLT pipeline
+	\item Increasing the maximum bound of the SQL endpoint's scaling range is the most suitable solution to address the slow query performance caused by high concurrency with small queries. This allows the SQL endpoint to dynamically scale up its resources to handle the increased load effectively, resulting in faster query execution times
+	\item Create a permanent view in DB SQL by using the \texttt{CREATE VIEW} statement followed by a \texttt{SELECT} query
+	\item By configuring an alert with a webhook alert destination, the data engineer can automate notifications to the team for specific conditions met within the data, specifically, when an order's quantity hits 0. This setup allows for seamless integration with various communication platforms, ensuring that alerts are promptly delivered to the team through the chosen messaging service
+	\item Auto Loader:
+	\begin{itemize}
+		\item specifically designed to efficiently ingest data into Delta Lake on DB, making it ideal for scenarios where new files are continuously added to a directory
+		\item uses a \texttt{directory listing} or \texttt{file notification} to identify new files in the specified directory
+		\item processes only the new files since the last pipeline run, without reprocessing files that have already been ingested
+	\end{itemize}
+	\item The Cloud Admin role typically handles the management of cloud resources, ensuring the right storage and access permissions are set across cloud services
+	\item Spark Structured Streaming uses a combination of \texttt{checkpointing} and \texttt{idempotent sinks} to ensure fault tolerance and reliable tracking of data processing progress:
+	\begin{itemize}
+		\item \texttt{Checkpointing} is a mechanism that saves the state of the streaming application at regular intervals to a durable storage system
+		\item \texttt{Checkpointing} is crucial for Structured Streaming to store the progress of the streaming query, including the offsets processed. This allows the system to recover from failures and resume processing from the last known state. 
+		\item Idempotent sinks are those that can handle reprocessing of data without duplicating the results. This means if the same data is sent to the sink multiple times, the final outcome remains unchanged
+		\item \texttt{Write-ahead logs} (WALs) are used to ensure that any changes to the checkpoint are durably recorded before being applied. This combination guarantees fault tolerance and exactly-once processing semantics. This is the core mechanic for offset tracking
+	\end{itemize}
+	\item An \texttt{ARRAY} data type is suitable for storing an arbitrary number of elements of the same data type
+	\item File-based data: text files are processed with each line representing a string value in a single column
+	\item Binary files: schema that includes metadata such as the file path, modification time, file length, and the content itself
+	\item Cluster pools can help manage cloud costs effectively by allowing administrators to specify a minimum and maximum number of idle instances
+	\item The Metastore Admin role is designed to handle specific data catalog management tasks, including the creation, modification, and assignment of privileges on data objects within the metastore
+	\item DB Clusters UI feature is designed with built-in filtering options that enable users to view only the clusters they are authorized to access
+	\item The \texttt{Data Plane} typically refers to the elements of a cloud service where the actual data processing takes place. In the context of DB Workspace and Services, Workspace clusters are used for running interactive and scheduled data analysis jobs, while SQL Warehouses (formerly known as DB SQL) are optimized for running SQL queries on large datasets. These two components are central to the data processing capabilities of the DB platform
+	\item \texttt{Serverless mode} dynamically scales resources based on demand. This means that during periods of high concurrency with many small queries, resources will automatically scale up to handle the load, minimizing latency. If already using a scaling configuration, increasing the maximum bound allows the SQL endpoint to allocate more resources during peak demand, improving performance for concurrent queries
+	\item The \texttt{fan-out} pattern is optimal for executing parallel processing tasks in DB
+	\item A storage credential is used to authenticate and authorize Unity Catalog to access external cloud storage services
+	\item DLTs are designed to work with notebooks only 
+	\item The dot \texttt{(.)} syntax is used for subfields of STRUCT types and JSON\\ $\to$ \texttt{SELECT <table>:<field>.<subfield}
+	\item The colon \texttt{(:)} syntax is used for fields $\to$ \texttt{SELECT <table>:<field>}
+
+	\item In DB, unmanaged tables will always specify a \texttt{LOCATION} during table creation
+	\item Generated columns: \texttt{GENERATED ALWAYS AS ...}
+	\item Higher order functions: \texttt{FILTER, EXIST, TRANSFORM, REDUCE}, not \texttt{MAP}
+	\item Replayable data sources and \texttt{idempotent sinks} allow Structured Streaming to ensure end-to-end, exactly-once semantics under any failure condition
+	\item Cluster Size: represents the number of cluster workers and size of compute resources available to run your queries and dashboards. The default is X-Large. 
+	\item Auto Stop determines whether the warehouse stops if it's idle for the specified number of minutes:
+	\begin{itemize}
+		\item Pro and classic SQL warehouses: The default is 45 minutes, which is recommended for typical use. The minimum is 10 minutes.
+		\item Serverless SQL warehouses: The default is 10 minutes, which is recommended for typical use. The minimum is 5 minutes when you use the UI. Note that you can create a serverless SQL warehouse using the SQL warehouses API, in which case you can set the Auto Stop value as low as 1 minute
+	\end{itemize}
+	\item Scaling sets the minimum and maximum number of clusters over which queries sent to the warehouse are distributed. The default is a minimum of one and maximum of one cluster
+	\item DB maintains a history of your job runs for up to 60 days
+	\item Dashboards in DB have built-in scheduling capabilities, allowing to automate the refresh process, eliminating the need for manual intervention
+	\item The \texttt{APPLY CHANGES INTO} statement is designed for a need to synchronize two tables based on a stream of updates and new records. Define a unique identifier or primary key
+	\item The DLT's event log includes information about pipeline operations, including audit logs and data lineage. Audit user actions by querying the event log for user\_action events
+	\item DB suggests that for detailed monitoring and observability of DLT pipelines, including update history and data quality reporting, one effective method is to query the event log directly. This involves creating a temporary view on the event log's storage path and then querying this view for specific metrics or update history
+	\item The Runs tab in the Jobs UI is specifically designed to provide detailed insights into each execution of a Job, including the performance of individual tasks or notebooks
+	\item The retention value provided while running \texttt{VACUUM} command is in \texttt{HOURS}. Default: 7 days
+	\item Use a query profile to visualize the details of a query execution
+	\item DB widgets:
+	\begin{itemize}
+		\item \texttt{text}: Input a value in a text box
+		\item \texttt{dropdown}: Select a value from a list of provided values
+		\item \texttt{combobox}: Combination of text and dropdown. Select a value from a provided list or input one in the text box
+		\item \texttt{multiselect}: Select one or more values from a list of provided values
+	\end{itemize}
+	\item \texttt{TRUNCATE TABLE} (DB SQL) removes all the rows from a table or partition
+	\item \texttt{OPTIMIZE <table> ...}
+	\item \texttt{COPY INTO} command is idempotent and files in the source location that have already been loaded are skipped
+	\item Enforced constraints: \texttt{NOT NULL, CHECK}
+	\item Trigger intervals:
+	\begin{itemize}
+		\item \texttt{.trigger(processingTime="2 minutes")}: Query will be executed in micro-batches and kicked-off at the defined intervals
+		\item \texttt{.trigger(once=True)}: Query will be executed in single micro-batch to process all the available data and then stops
+		\item \texttt{.trigger(availableNow=True)}: Query will execute multiple micro-batches to process all the available data and then stops
+	\end{itemize}
+	\item \texttt{CREATE TABLE AS SELECT} statements derive schema details from the query and you must not specify a column\_specification.
+	\item \texttt{MINUS} or \texttt{EXCEPT} is used to get all rows in the first \texttt{SELECT} statement that are not returned by the second \texttt{SELECT} statement
+	\item Job cluster cannot be created using the UI, CLI or REST API
+	\item Output modes available in Spark Structured Streaming:
+	\begin{itemize}
+		\item \texttt{append}: default, only the new rows added to the resulting table since the last trigger will be outputted to the sink. This is supported for only those queries where rows added to the result table is never going to change
+		\item \texttt{complete}: whole resulting table will be outputted to the sink after every trigger. This is supported for aggregation queries
+		\item \texttt{update}: only the rows in the resulting table that were updated since the last trigger will be outputted to the sink
+	\end{itemize}
+	\item View:
+	\begin{itemize}
+		\item Persistente Speicherung im Metastore $\to$ bleibt auch nach Beenden des Clusters bestehen
+		\item Scoped for multiple sessions but they are not accessible after detaching and reattaching a DB notebook to a cluster
+		\item virtual table that has no physical data, just a saved SQL query against actual tables
+	\end{itemize}
+	\item Temporary Views:
+	\begin{itemize}
+		\item Existiert nur in der aktuellen Sitzung $\to$ wird nicht im Metastore gespeichert
+		\item Better suited for real-time, ad-hoc analysis tasks where the data does not need to be stored persistently
+		\item Tied to a Spark session and not visible to other sessions
+	\end{itemize}
+	\item Global Temporary Views:
+	\begin{itemize}
+		\item Ist über mehrere Sitzungen sichtbar, bleibt aber nur solange bestehen wie der Cluster aktiv ist
+		\item Speicherort: \texttt{global\_temp}-Datenbank
+		\item can be still accessed even if the notebook is detached and attached
+		\item Can be accessed in other sessions on the same cluster and are tied to a cluster temporary database called \texttt{global\_temp}
+		\item Available only on the cluster it was created, when the cluster restarts global temporary view is automatically dropped
+	\end{itemize}
+	\item Common Table Expression:
+	\begin{itemize}
+		\item \texttt{WITH <name> AS (SELECT FROM ...) SELECT FROM ... <name>}
+		\item Useful for complex subqueries
+	\end{itemize} 
+\end{itemize}
+\end{document}

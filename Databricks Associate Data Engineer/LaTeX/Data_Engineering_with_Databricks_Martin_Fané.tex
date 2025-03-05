@@ -1,0 +1,1128 @@
+
+\documentclass[11pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{ucs}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption} 		% Subfigures
+\usepackage{hyperref}
+\usepackage{fullpage}	
+\usepackage{color}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\usepackage[font=footnotesize]{caption}
+\usepackage{draftwatermark}
+\SetWatermarkText{Martin Fané}
+\SetWatermarkScale{3}
+\SetWatermarkColor[gray]{0.99}
+\usepackage[numindex,nottoc,section]{} 
+
+
+\def\Reg{\textsuperscript{\textregistered}}	% Registered Zeichen
+\def\TM{\textsuperscript{\texttrademark}}	% Trademark Zeichen
+\def\CR{\textsuperscript{\textcopyright}}	% Copyright Zeichen
+
+
+\usepackage{listings, xcolor}
+\lstset
+{	
+	language     = Python,
+	basicstyle   = \ttfamily,
+	keywordstyle = \color{blue}\ttfamily,
+	stringstyle  = \color{orange}\ttfamily,
+	commentstyle = \color{green}\ttfamily,
+	morecomment  = [l][\color{teal}]{\#},
+%	backgroundcolor = \color{lightgray}\ttfamily,
+	breaklines=true,
+	tabsize=3,
+	numbers=left,
+	numberstyle=\color{black},
+	numbersep=5pt, 
+	frame=single
+}
+
+\begin{document}
+\tableofcontents
+
+\newpage
+\section{Data Lakehouse}
+Data management system that combines the benefits of \hyperref[delta_lake]{\texttt{Data Lakes}} and \texttt{Data Warehouses}.
+\begin{itemize}
+	\item Provides scalable storage and processing capabilities 
+	\item Can establish a single source of truth, eliminate redundant costs, and ensure data freshness
+	\item Often use data design pattern that incrementally improves, enriches, and refines data as it moves through layers of staging and transformation $\to$ \hyperref[medaillon]{Medaillon architecture}
+\end{itemize}
+
+\subsection{Data Ingestion}
+\begin{itemize}
+	\item Logical layer provides a place for (batch/streaming) data to land in its raw format
+	\item Files are converted into \hyperref[delta_lake_table]{\texttt{Delta Tables}} and schema enforcement capabilities from \texttt{Delta Lake} can be used to check for missing or unexpected data
+	\item Use \hyperref[unity_catalog]{\texttt{Unity Catalog} (\texttt{UC})} to register tables according to data governance model and require data isolation boundaries
+	\item \texttt{UC} allows to track lineage and apply unified governance to keep sensitive data private and secure
+\end{itemize}
+
+
+\section{Delta Lake} \label{delta_lake}
+\texttt{Delta Lake} is an open source storage layer that supports \texttt{ACID} transactions, scalable metadata handling, and unification of streaming and batch data processing. 
+\subsection{Key Features}
+\begin{itemize}
+	\item \texttt{ACID} transactions:
+	\begin{itemize}
+		\item \texttt{A}tomicity: Entire transaction (either failing or succeeding) completes
+		\item \texttt{C}onsistency: Data follows rules or will be rolled back
+		\item \texttt{I}solation: One transaction completed before the start of another transaction
+		\item \texttt{D}urability: Data is saved in a persistent state once completed
+	\end{itemize}
+	\item Problems solved by \texttt{ACID}:
+	\begin{itemize}
+		\item Streamlined data append
+		\item Simplified data modification
+		\item Data integrity through job failures
+		\item Support for real-time operations
+		\item Efficient historical data version management
+	\end{itemize}
+	\item DML Operations:
+	\begin{itemize}
+		\item Modify data using multiple frameworks, services, and languages
+		\item \texttt{CRUD-}Operations: \texttt{INSERT, UPDATE, DELETE, MERGE}
+	\end{itemize}
+	\item Data Skipping Index: Employs file statistics to optimize query performance by skipping unnecessary data scans
+	\item Time Travel:
+	\begin{itemize}
+		\item \texttt{Delta Tables} keep a transaction log for each version (writes) of the table
+		\item Historical querying possible by Delta transaction log
+		\item Snapshot Isolation
+		\item Useful for audits, regulatory compliance, and data recovery
+	\end{itemize}
+	\item Schema evolution and enforcement:
+	\begin{itemize}
+		\item Evolution: Automatically adjusts the schema of \texttt{Delta Table} as data changes (adding new columns, rename columns, etc.)
+		\item Enforcement: Ensures that any data written to the \texttt{Delta Table} matches the table’s defined schema
+	\end{itemize}
+	\item Scalable metadata:
+	\begin{itemize}
+		\item Transaction log providing transactional consistency per \texttt{ACID} transaction
+		\item Efficient managing of metadata for large scale datasets without its operations impacting query or processing performance
+	\end{itemize}
+	\item Audit history:
+	\begin{itemize}
+		\item Detailed logs of all changes made to the data (who, what, when)
+		\item Crucial for compliance and regulatory requirements
+	\end{itemize}
+	\item Incrementally improve quality of data
+	\item Data Objects: \texttt{Metastore} $\to$ \texttt{Catalog} $\to$ \texttt{Schema} (Database) $\to$ \texttt{Table, View, Function}
+	\item Liquid Clustering:
+	\begin{itemize}
+		\item Data layout to support efficient query access and reduce data management and tuning overhead
+		\item Flexible and adaptive to data pattern changes, scaling, and data skew
+		\item Most consistent data skipping
+	\end{itemize}
+	\item Predictive I/O:
+	\begin{itemize}
+		\item Automates \hyperref[performance_tuning_delta_lake]{\texttt{OPTIMIZE} and \texttt{VACUUM}} operations
+		\item Uses ML to determine most efficient access pattern to read data
+	\end{itemize}
+\end{itemize}
+
+\subsection{Change Data Capture (CDC)} \label{cdc}
+\begin{itemize}
+	\item Technique to capture and process the changes made to data in a source database and deliver these changes in real time to a target system
+	\item Enables to keep \texttt{Data Lake} or \texttt{Warehouse }in sync with operational databases
+	\item Supports real-time analytics and data science
+	\item Useful for data synchronization, replication, auditing, and analytics
+	\item \texttt{Delta Lake} supports \texttt{CDC} through \hyperref[cdf]{\texttt{Change Data Feed} (\texttt{CDF})}, which allows \texttt{Delta Tables} to track low-level changes between versions of a \texttt{Delta Table}
+	\item Challenges: Handling slowly changing dimensions (\texttt{SCDs}), which are dimensions that store both current and historical data over time in a \texttt{Data Warehouse}
+	\item Syntax: \texttt{APPLY CHANGES INTO}
+\end{itemize}
+
+\subsection{Change Data Feed (CDF)} \label{cdf}
+\begin{itemize}
+	\item Gives ability to track changes to a \texttt{DLT}
+	\item \texttt{UPDATE, MERGE, DELETE} operations will be put into a new \texttt{\_change\_data} folder, while \texttt{APPEND} operations already have their own entries in the table history
+	\item Through this tracking, the combined operations can be read as a feed of changes from a table to use downstream
+	\item Ability to only have the rows that have changed between versions makes downstream consumption of \texttt{UPDATE, MERGE, DELETE} operations extremely efficient
+	\item \texttt{CDF} captures changes only from a \texttt{Delta Table} and is only forward-looking once enabled $\to$ it will capture changes once the table property is set up and not earlier
+\end{itemize}
+
+
+\newpage
+\section{Workflows}
+\subsection{Compute}
+\subsubsection{Job (Automated) Cluster}
+\begin{itemize}
+	\item Created and terminated automatically for each job run reducing usage costs
+	\item Best for automated jobs or data pipelines, and operational use cases
+	\item Only job clusters should be used in production
+	\item Single-user
+\end{itemize}
+
+\subsubsection{All-purpose (Interactive) Cluster}
+\begin{itemize}
+	\item Can be shared by multiple users
+	\item Best for interactive tasks, streaming workloads, data exploration, development, ad-hoc and ongoing analysis
+	\item Should not be used in production as they are not cost-efficient
+	\item Manually managed
+\end{itemize}
+
+\subsubsection{Other}
+\begin{itemize}
+	\item Fully managed services that are operationally simpler and more reliable
+	\item \texttt{Serverless compute for notebooks}: On-demand, scalable compute used to execute \texttt{SQL} and \texttt{Python} in notebooks
+	\item \texttt{Serverless compute for jobs}: On-demand, scalable compute used to run \texttt{Databricks} jobs without configuring and deploying infrastructure
+	\item \texttt{Instance pools}: Compute with idle, ready-to-use instances, used to start and auto-scaling times
+	\item \texttt{Serverless SQL warehouses}: On-demand elastic compute used to run \texttt{SQL} commands on data objects in the \texttt{SQL} editor or interactive notebooks  
+	\item \texttt{Classic SQL warehouses}: Used to run \texttt{SQL} commands on data objects in the \texttt{SQL} editor or interactive notebooks. \texttt{Photon} included, ad-hoc \texttt{SQL} and BI analytics
+\end{itemize}
+
+\subsection{Cluster}
+\begin{itemize}
+	\item CPU should always be >80\% utilization
+	\item 8 $\to$ 16 cores per executor (depending on workload) 
+	\item \texttt{Shared cluster}:
+	\begin{itemize}
+		\item Multiple users can work on a cluster in parallel
+		\item \texttt{Python, SQL, SCALA}
+	\end{itemize}
+	\item \texttt{Single user cluster}:
+	\begin{itemize}
+		\item Dedicated to a single user at creation time
+		\item Supports ML Runtimes, \texttt{Spark submit} jobs
+		\item Fine-grained access control
+	\end{itemize}
+	\item \texttt{SQL Warehouse (Classic, Pro, and Serverless)}:
+	\begin{itemize}
+		\item Multiple users can work on a shared cluster in parallel
+		\item \texttt{SQL} only
+	\end{itemize}
+\end{itemize}
+
+\subsection{Jobs Features}
+\begin{itemize}
+	\item Job parameters: Passed into each task within a job, formatting and behavior of the parameter is dependent on the task type
+	\item Job contexts: Special set of templated variables that provide introspective metadata on the job and task run
+	\item Task values: Custom parameters that can be shared between tasks in a \texttt{Databricks} job
+\end{itemize}
+
+\subsection{Late Jobs}
+\begin{itemize}
+	\item Allows customers to define a \texttt{soft timeout} after which they receive a warning that a job task run takes longer than expected and can also be timed out
+	\item No alerts will be triggered by default, but the event will be logged
+\end{itemize}
+
+\subsection{Run Job Task Type}
+\begin{itemize}
+	\item With jobs-as-a-task, a job can be broken into 2 (or more) jobs, chained together
+	\item Jobs triggered by a \texttt{Run Job Task} use their own cluster configuration
+	\item Separate larger jobs into multiple components, as well as creating generalized, modular, reusable jobs that can be parameterized by other jobs
+\end{itemize}
+
+\subsection{Databricks Asset Bundle (DAB)} \label{dab}
+\begin{itemize}
+	\item Collection of \texttt{Databricks} artifacts (e.g., jobs, ML models, \texttt{DLT} pipelines, and clusters) and assets (e.g., \texttt{Python} files, notebooks, \texttt{SQL} queries, and dashboards)
+	\item These bundles are represented in a configuration file and can be co-versioned
+	\item Using CLI, these bundles can be materialized across multiple workspaces like \texttt{dev, staging} and \texttt{production} enabling to integrate these into \texttt{CI/CD} and automation processes
+\end{itemize}
+
+\subsection{Best Practices}
+\begin{itemize}
+	\item Automated/\texttt{Job Clusters}:
+	\begin{itemize}
+		\item Automated/\texttt{Job Clusters} for production workloads
+		\item Interactive/\texttt{All Purposes Clusters} are for development only
+	\end{itemize}
+	\item Prefer Multi-Task jobs:
+	\begin{itemize}
+		\item Each task could run on its own cluster
+		\item Tailored job clusters enable each task to run independently without resource sharing bottlenecks
+	\end{itemize}
+	\item Cluster reuse: Enable running tasks in a \texttt{Databricks} Job on the same cluster for more efficient cluster utilization and decreased job latency
+	\item Enable \texttt{Photon}: High-performance vectorized query engine
+	\item Repair and re-run only the failed tasks to reduce time and resources
+	\item Late jobs
+	\item Serverless Workflows:
+	\begin{itemize}
+		\item Fully managed service operationally simpler and more reliable
+		\item Faster clusters and auto-scaling capabilities
+	\end{itemize}
+	\item Triggers: Use file arrival and \texttt{Delta Table} triggers
+	\item Modular orchestration: Reuse jobs and break down huge jobs into multiple smaller / manageable tasks
+	\item Run as \texttt{Service Principal}
+	\item \texttt{CI/CD} with \texttt{DAB}
+\end{itemize}
+
+
+\section{Delta Lake Table} \label{delta_lake_table}
+Open-source \texttt{Data Lake} storage format providing features such as transactional capabilities, schema evolution, time travel and concurrency control to provide a robust, scalable, and efficient storage solution.
+\subsection{Anatomy}
+\begin{itemize}
+	\item Data files:
+	\begin{itemize}
+		\item Store data in \texttt{Parquet} file format
+		\item Files are stored in a distributed cloud or on-premises file storage system such as \texttt{HDFS, AWS S3}, etc.
+	\end{itemize}
+	\item Transaction (Delta) log:
+	\begin{itemize}
+		\item Ordered record of every transaction performed on a \texttt{DLT}
+		\item Ensures \texttt{ACID} properties by recording all changes to a table in a series of \texttt{JSON} files
+		\item Each transaction is recorded as new \texttt{JSON} file in the \texttt{\_delta\_log} directory
+	\end{itemize}
+	\item Metadata:
+	\begin{itemize}
+		\item Includes information about the table's schema, partitioning, and configuration settings
+		\item Stored in the transaction log and can be retrieved using \texttt{SQL, Spark, Rust}, and \texttt{Python} APIs
+		\item Helps manage and optimize table by providing information for schema enforcement and evolution, partition strategies, and data skipping
+	\end{itemize}
+	\item Schema evolution:
+	\begin{itemize}
+		\item Defines the table's structure, including its columns, data types, etc.
+		\item Enforced on write, ensuring that all data written to the table adheres the defined structure
+	\end{itemize}
+	\item Checkpoints:
+	\begin{itemize}
+		\item Periodic snapshots of transaction log helping to speed up the recovery process
+		\item \texttt{Delta Lake} consolidates the state of the transaction log by default every 10 transactions
+		\item Stored as \texttt{Parquet} files 
+	\end{itemize}
+	\item \hyperref[delta_table_sql]{\texttt{SQL}-Implementierung}
+	\item \hyperref[delta_table_python]{\texttt{Python}-Implementierung}
+\end{itemize}
+
+\newpage
+\section{Optimizing Delta Lake Tables}
+\begin{itemize}
+	\item \texttt{OPTIMIZE}:
+	\begin{itemize}
+		\item Compact and sort data in the \texttt{Delta Table}
+		\item Merges smaller files into larger ones $\to$ reducing storage overhead and enhance query performance
+	\end{itemize}
+	\item \texttt{ZORDER}:
+	\begin{itemize}
+		\item Organizes data based on selected columns to improve query performance
+		\item Groups related data together physically, reducing the amount of data/files it takes to read or scan during queries
+		\item Data write optimization that requires considering query patterns and selected columns for optimal results 
+		\item Identify columns that are commonly used in query predicates and have a high cardinality
+		\item \texttt{Z-Ordering} is more effective when the query predicates are selective and the data is skewed
+	\end{itemize}
+	\item Partitioning:
+	\begin{itemize}
+		\item Organize data files in a table or \texttt{Data Lake} based on specific column values
+		\item Optimizes query performance by reducing the amount of data that needs to be scanned during queries
+		\item Data of partitioned tables are physically stored in directories that correspond to the unique value of the partitioned column
+	\end{itemize}
+	\item \texttt{VACUUM}:
+	\begin{itemize}
+		\item Remove stale files that are no longer referenced by the table
+		\item Use \texttt{RETAIN} to specify number of hours to retain the history of a table
+	\end{itemize}
+	\item \hyperref[optimize_sql]{\texttt{SQL}-Implementierung}
+	\item \hyperref[optimize_python]{\texttt{Python}-Implementierung}
+\end{itemize}
+
+
+\subsection{Summary}
+\begin{itemize}
+	\item Performance impact: Both \texttt{OPTIMIZE} and \texttt{ZORDER} operations can be resource-intensive and time-consuming $\to$ may impact query performance on tables with heavy workloads
+	\item Choose right column for \texttt{ZORDER}
+	\item Data distribution: Partitions should not end up with larger files than others $\to$ skew
+	\item Data evolution: \texttt{ZORDER} is not dynamic; it remains static after the data is written. If data distribution changes significantly over time, initial well-optimized \texttt{Z-Ordering} may become less effective
+	\item Running \texttt{OPTIMIZE} twice on the same dataset, the second run will have no effect $\to$ \texttt{idempotent operation}
+\end{itemize}
+
+
+\newpage
+\section{Delta Live Table} \label{delta_live_table}
+\texttt{Delta Live Table (DLT)} is a Data Engineering pipeline framework running on top of a \texttt{Delta Lake}. It is a materialized view for the \texttt{Lakehouse} as well as defined by a \texttt{SQL} query and created/kept up to date by a pipeline.
+\subsection{Key Features} 
+\begin{itemize}
+	\item Allows users to write \texttt{SQL} queries by extending standard \texttt{SQL} syntax with unified declarative way of specifying data definition language (\texttt{DDL}) and data manipulation language (\texttt{DML}) operations
+	\item Combines incremental ingestion, streamlined ETL, and automated data quality processes like \texttt{expectations} 
+	\item Rather than building out a processing pipeline piece by piece, the declarative framework allows to simply define tables and views with less syntax
+	\item Manages compute resources, data quality monitoring, processing pipeline health, and optimizes task orchestration
+	\item \texttt{ACID} transactions, schema enforcement, time travel, and unified batch and streaming processing
+	\item Materialized view (\texttt{DLT}): 
+	\begin{itemize}
+		\item Stores results of a query and can be refreshed periodically or on demand to reflect latest state of the entire data
+		\item Only available in the pipeline, not persistent to the metastore
+	\end{itemize}
+	\item Streaming table:
+	\begin{itemize}
+		\item Processes streaming data incrementally and continuously updates the results of a query based on new data arriving
+		\item Only supports reading from \texttt{append}-only streaming sources and only reads input batch once
+		\item Can perform operations on the table outside the managed \texttt{DLT} pipeline
+	\end{itemize}
+	\item Use \texttt{CREATE OR REFRESH STREAMING LIVE TABLE} to define a streaming table that processes each record exactly once
+	\item Read a table with \texttt{STREAM()} to denote that we only want to process the incremental/new data and not the full table (\texttt{append}-only)
+	\item Use \texttt{CREATE OR REFRESH LIVE TABLE} to define a materialized view that processes records as required
+	\item General syntax for \texttt{DLT} query in \texttt{SQL}:
+\begin{lstlisting}
+CREATE OR REFRESH [STREAMING] LIVE TABLE <table> AS
+<select_statement>
+\end{lstlisting}
+\end{itemize}
+
+\subsubsection{Medaillon Architecture} \label{medaillon}
+Data design pattern that organizes data in a \texttt{Lakehouse} into bronze, silver and, gold layers.
+\begin{itemize}
+	\item Bronze:
+	\begin{itemize}
+		\item Contains raw data from multiple sources (raw ingestion and history)
+		\item Replaces traditional data lake
+		\item Provides efficient storage and querying of full, unprocessed history of data
+	\end{itemize}
+	\item Silver: 
+	\begin{itemize}
+		\item Contains validated and conformed data (filtered, cleaned, augmented)
+		\item Reduces data storage complexity, latency, and redundancy
+		\item Optimizes ETL throughput and analytic query performance
+		\item Preserves grain of original data
+		\item Enforces production schema, data quality checks
+	\end{itemize}
+	\item Gold: 
+	\begin{itemize}
+		\item Curated and enriched data for analytics and AI (business-level aggregates)
+		\item Powers ML applications, reporting, dashboards, ad-hoc analysis
+		\item Refined views of data, typically with aggregations
+		\item Reduces strain on production systems
+		\item Optimizes query performance for business-critical data
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Data Quality and Validation Rules} \label{data_quality}
+\begin{itemize}
+	\item Define and enforce data quality rules on datasets using \texttt{expectations} $\to$ optional clauses that check the quality of each record in a query
+	\item Specify actions, such as warning, dropping, failing, or quarantining the record
+	\item \hyperref[delta_live_sql]{\texttt{SQL}-Implementierung}
+\end{itemize}
+
+
+\subsection{Types of Exception Handling Actions and Syntax}
+\begin{itemize}
+	\item Warn (default):
+	\begin{itemize}
+		\item Result: Invalid records are written to the target; the dataset reports the failure as a metric
+\begin{lstlisting}
+# SQL
+CONSTRAINT <expectation> EXPECT (<expectation_expr>);
+
+# Python
+@dlt.expect(<description>, <constraint>)
+@dlt.expect_all(expectations)	
+\end{lstlisting}
+	\end{itemize}
+	\item Drop:
+	\begin{itemize}
+		\item Result: Invalid records are not written to the target; the dataset reports the failure as a metric
+\begin{lstlisting}
+# SQL
+CONSTRAINT <expectation> EXPECT (<expectation_expr>) 
+ON VIOLATION DROP ROW;
+
+# Python
+@dlt.expect_or_drop(<description>, <constraint>)
+\end{lstlisting}
+	\end{itemize}
+	\item Fail:
+	\begin{itemize}
+		\item Result: Invalid records stop the update from completing. Fix issue before re-running the query
+\begin{lstlisting}
+# SQL
+CONSTRAINT expectation EXPECT (<expectation_expr>)
+ON VIOLATION FAIL UPDATE;
+
+# Python
+@dlt.expect_or_fail(<description>, <constraint>)
+\end{lstlisting}
+	\end{itemize}
+\end{itemize}
+
+
+
+\section{Data Governance with Unity Catalog} \label{governance}
+\subsection{Unity Catalog} \label{unity_catalog}
+\begin{itemize}
+	\item \texttt{UC} is a universal catalog for data and AI on a \texttt{Lakehouse}
+	\item Helps to control, audit, trace, and discover data across \texttt{Databricks}
+	\item Set up data access rules in one place and enforce them in all workspaces, following ANSI \texttt{SQL} standards
+	\item Create and manage storage credentials, external locations, storage locations, and volumes using \texttt{SQL} or \texttt{UC} UI
+	\item Access data from various cloud platforms and storage formats
+	\item Apply fine-grained access control and data governance policies
+	\item Unified governance for data and AI:
+	\begin{itemize}
+		\item Assets within \texttt{UC} include \texttt{catalogs, databases (schemas), tables}, notebooks, workflows, queries, dashboards, filesystem volumes, ML models, etc.
+		\item Protect data and AI assets with \texttt{UC's} built-in governance and security with unified solution
+	\end{itemize}
+	\item \hyperref[unity_sql]{\texttt{SQL}-Implementierung}
+\end{itemize}
+
+\subsection{Create and Manage Catalogs, Schemas, Volumes and Tables using UC} 
+\subsubsection{Metastore} \label{metastore}
+\begin{itemize}
+	\item Centralized metadata layer 
+	\item Provides ability to catalog and share data assets across the \texttt{Lakehouse}
+	\item Convention: \{\texttt{catalog}\}.\{\texttt{schema}\}.\{\texttt{table}\} or \{\texttt{catalog}\}.\{\texttt{schema}\}.\{\texttt{volume}\} $\to$ organize data and asset hierarchically
+	\item Hierarchy enables data applications to read and join across boundaries that traditionally required copying data between \texttt{Hive} tables
+\end{itemize}
+
+\subsubsection{Catalog} \label{catalog}
+\begin{itemize}
+	\item Object that groups data assets in the first level of structure
+	\item Can include \texttt{schemas, tables} or \texttt{volumes}
+	\item Can also specify a storage location that is used by default for its \texttt{schemas, tables} or \texttt{volumes}
+\end{itemize}
+	
+\subsubsection{Table} \label{table}
+\begin{itemize}
+	\item Access tabular data stored in cloud object storage
+	\item \texttt{Managed table}: 
+	\begin{itemize}
+		\item Backed by a managed storage location 
+		\item Automatically deleted when the table is dropped
+		\item Only \texttt{DELTA} format
+	\end{itemize}
+	\item \texttt{External table}:
+	\begin{itemize}
+		\item Backed by an external location 
+		\item Is not deleted when the table is dropped 
+		\item Introduced by keyword \texttt{LOCATION} when created
+		\item Supports many file formats
+	\end{itemize}
+\end{itemize}
+
+\subsubsection{Volume} \label{volume}
+\begin{itemize}
+	\item \texttt{UC} object representing a logical volume of storage in a cloud object storage location
+	\item Provide capabilities for accessing, storing, governing, and organizing files (non-tabular, (semi-/un-) structured data)
+	\item A \texttt{managed volume} is backed by a managed storage location and automatically deleted when the volume is dropped
+	\item An \texttt{external volume} is backed by an external location but not deleted when the volume is dropped
+\end{itemize}
+
+\subsubsection{View} \label{view}
+\begin{itemize}
+	\item Read-only object that is the result of a query over one or more tables and views in a \texttt{UC} metastore
+	\item Materialized views: Incrementally calculate and update results returned by the defining query
+	\item Temporary views: Has limited scope and persistence and is not registered to a schema or catalog
+	\item Dynamic views: Used to provide row- and column-level access control, in addition to data masking
+\end{itemize}
+
+
+\subsection{Define Access Control Policies in UC}
+\begin{itemize}
+	\item Use \texttt{ANSI SQL} to grant permissions to existing \texttt{Data Lake}
+	\item Fine-grained access control method controls who can access data based on multiple conditions or entitlements
+	\item Allows to specify policies for each data item and attribute and apply them consistently across all workspaces and platforms
+	\item Use \texttt{GRANT} and \texttt{REVOKE} statements to manage privileges on securable objects to principals
+	\item Securable objects can be a \texttt{catalog, schema, table} or \texttt{view}
+	\item Principal is a user, a service principal, or a group that can have privileges
+	\item General Syntax:
+\begin{lstlisting}
+GRANT <privilege> ON <securable_object> TO <principal>;
+REVOKE <privilege> ON <securable_object> FROM <principal>;
+\end{lstlisting}
+	with \texttt{privilege}: e.g., \texttt{SELECT, ALL PRIVILEGES, APPLY TAG, CREATE SCHEMA, USE CATALOG}
+	\item Inheritance model: lower-level objects inherit from higher-level objects 
+	\item \texttt{UC} object ownership:
+	\begin{itemize}
+		\item Object owners get all privileges on their own objects by default and can give privileges to their own objects and any objects inside them
+		\item Schema owners do not automatically have all privileges over the tables in the schema, but can give themselves privileges over the tables in the schema
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Data Lineage} \label{data_lineage}
+\begin{itemize}
+	\item Describes the transformations and refinements of data from source to insight and includes the metadata and events associated with the data lifecycle
+	\item Benefits:
+	\begin{itemize}
+		\item Impact analysis: Users can see downstream consumers of a dataset
+		\item Data understanding: Users gain better context and thrustworthiness of data
+		\item Data provenance and governance: Users can access lineage data through \texttt{Catalog Explorer} or \texttt{REST API }
+	\end{itemize}
+	\item Lineage include source and destination tables and columns, notebooks, workflows, and dashboards related to a query
+	\item Audit logs include user, timestamp, action, and query details for each access
+	\item Users need the \texttt{SELECT} privilege on a table to see its lineage
+\end{itemize}
+
+\subsection{Accessing System Tables}
+\begin{itemize}
+	\item System tables are an analytical  store hosted by \texttt{Databricks} containing account's operational data
+	\item Audit logs include records for all audit events (user actions, cluster events, job runs, and notebook executions)
+	\item Table and column lineage includes records for each read or write event on a \texttt{UC} table or path, as well as source and destination columns involved in the event
+	\item Clusters include full history of cluster configurations over time
+	\item Node types include currently available node types with basic hardware information
+\end{itemize}
+
+
+\section{Performance Tuning in Delta Lake} \label{performance_tuning_delta_lake}
+\subsection{Avoiding Small File Problem}
+\begin{itemize}
+	\item Too many small files greatly increase overhead for reads
+	\item Too few large files reduce parallelism on reads
+	\item \texttt{Databricks} automatically tunes the size of \texttt{DLT} and compacts small files on write with \texttt{auto-optimize}
+\end{itemize}
+
+\subsection{Table Statistics}
+\begin{itemize}
+	\item Collects statistics on all columns in a table
+	\item Helps \texttt{Adaptive Query Execution}:
+	\begin{itemize}
+		\item \texttt{Spark} automatically breaks down larger partitions into smaller, similar sized partitions
+		\item Choose proper \texttt{join} type
+		\item Select correct build in a \texttt{hash-join}
+		\item Calibrating the \texttt{join} order in a multi-way \texttt{join}
+		\item Syntax: \texttt{ANALYZE TABLE <table> COMPUTE STATISTICS FOR ALL COLUMNS}
+	\end{itemize}
+\end{itemize}
+
+\subsection{Predictive Optimization}
+\begin{itemize}
+	\item Refers to using predictive analytics techniques to automatically optimize and enhance performance of systems, processes, or workflow
+	\item Involves data-driven insights to proactively identify and implement optimizations, improving efficiency, cost-effectiveness, and overall system performance
+	\item Maintenance operations like \texttt{OPTIMIZE} to improve query performance by optimizing file size and \texttt{VACUUM} to reduce storage costs by deleting unused data
+\end{itemize}
+
+
+
+\section{Performance Optimization with Spark}
+\subsection{Broadcast Variables}
+\begin{itemize}
+	\item Feature allowing to send read-only data to all the executors in a cluster to be cached in memory and used for local operations $\to$ useful when working with a large data set used in multiple tasks
+	\item Will not be sent over the network for each tasks
+	\item Cache the data on each executor node rather than sending it with every task $\to$ reduces network traffic and improves performance
+	\item Once the data is distributed, it is cached on each executor node in a serialized form
+	\item When a task needs to access the data, it deserializes it and uses it in the computation
+	\item Data remains cached until the broadcast variable is destroyed
+	\item Broadcast variables are read-only and cannot be modified once created
+\end{itemize}
+
+\subsubsection{Limitations and Best Practice}
+\begin{itemize}
+	\item Are not automatically garbage collected $\to$ destroy them using \texttt{destroy} method of \texttt{Broadcast} class when done
+	\item Not checkpointed $\to$ If an executor node fails and restarts, it needs to fetch the data again from another node or from the driver
+	\item Use them sparingly and carefully $\to$ too many variables can consume a lot of memory
+\end{itemize}
+
+
+\subsection{Minimize Data Shuffling}
+\begin{itemize}
+	\item Data shuffling is the process of transferring data across different partitions or nodes
+	\item Can be expensive and time-consuming as it involves network, disk, and (de-)serialization of data
+	\item Shuffling occurs when performing a
+	\begin{itemize}
+		\item \texttt{join} on two or more \texttt{DataFrames}
+		\item global aggregations 
+		\item \texttt{repartition} or \texttt{coalesce} operations
+	\end{itemize}
+	\item Reduce shuffling by using
+	\begin{itemize}
+		\item a \texttt{broadcast join} or \texttt{coalesce join} instead of a \texttt{sort-merge join} or shuffled \texttt{hash join}
+		\item partial or approximate aggregation instead of exact aggregations
+		\item optimal partitioning $\to$ dividing data into smaller logical units processed in parallel by different executors or cores 
+		\item \texttt{broadcast join}: Send a copy of a small table to each executor node in the cluster so that it can be cached in memory and used for local join operations with the larger table
+	\end{itemize}
+	\item Reduce the number of partitions to avoid creating too many files or tasks
+	\item Increase number of partitions to avoid creating too few large files or tasks that can cause data skew or memory issues
+	\item Reduce network IO by using fewer, larger workers
+\end{itemize}
+
+\subsection{Avoiding Data Skew}
+\begin{itemize}
+	\item Occurs when the data being processed is not evenly distributed (inconsistent file size) across partitions, resulting in some tasks taking much longer than others and wasting cluster resources
+	\item Can be caused by operations that require shuffling or repartitioning the data (\texttt{join, groupBy} or \texttt{orderBy})
+	\item How to handle skewed data:
+	\begin{itemize}
+		\item Isolate the skewed data from the rest of the data and process it separately $\to$ avoid shuffling the skewed data and reduce load on the cluster
+		\item Broadcast \texttt{hash join}: broadcast one of the \texttt{DataFrames} to each executor and build hash table in memory
+		\item Key salting: modifies the join key column by adding a random suffix (\texttt{salt}) to each value $\to$ create more partitions and distribute the data more evenly across them
+	\end{itemize}
+\end{itemize}
+
+\subsection{Caching and Persistence}
+\begin{itemize}
+	\item Allow \texttt{Spark} to store some or all of the data in memory or on disk $\to$ can be reused without computing
+	\item Store some intermediate results in memory or other more durable storage, e.g., disk space $\to$ avoid recomputing
+\end{itemize}
+
+\subsection{Partitioning and Repartitioning}
+\begin{itemize}
+	\item Partitioning: Split data into multiple chunks that can be processed in parallel by different nodes in a cluster
+	\item Repartitioning: Change the number or distribution of partitions in an existing dataset
+	\item Partitioning drawbacks:
+	\begin{itemize}
+		\item Increases metadata cost of managing data, as each partition adds an entry to the \texttt{Delta Lake} transaction log
+		\item It may introduce data skew or imbalance if some partitions are much larger or smaller than others
+	\end{itemize}
+	\item Best practices:
+	\begin{itemize}
+		\item Select column with high cardinality, low skew, and high selectivity
+		\item Avoid partitioning by a column with low cardinality, high skew, and low selectivity (column is rarely used for filtering or joining)
+		\item Use partitioning scheme that matches query patterns, e.g., if most of the queries filter by a single column, use a single-column partitioning scheme
+		\item Monitor and optimize partitioning scheme over time:
+		\begin{itemize}
+			\item \texttt{ANALYZE TABLE} to collect statistics on partitions,
+			\item \texttt{VACUUM} to remove obsolete files from partitions,
+			\item \texttt{OPTIMIZE} to coalesce small files into larger ones
+			\item \texttt{ZORDER} to reorder data within partitions based on a column
+		\end{itemize}   
+		\item Try to keep each partition less than 1TB and greater than 1GB
+	\end{itemize}
+\end{itemize}
+
+
+
+\section{Spark Structured Streaming} \label{structured_streaming}
+\subsection{Process}
+\begin{itemize}
+	\item When streaming, \texttt{Spark} 
+	\begin{itemize}
+		\item represents streaming computation as a series of transformations on an unbounded table
+		\item translates logical plan into a series of micro-batch jobs or continuous tasks running on the cluster
+	\end{itemize}
+	\item Physical plan is then optimized $\to$ predicate pushdown, project pruning, and join reordering
+	\item Depending on \texttt{source} type and \texttt{options}, \texttt{Spark} will append new data from the \texttt{source} and append them to an internal buffer $\to$ acts as an input table for streaming query
+	\item Depending on \texttt{trigger} type and \texttt{options}, \texttt{Spark} then periodically processes new data from the buffer and updates an internal state store $\to$ keeps track of intermediate results such as aggregates, windows, and joins
+	\item Depending on \texttt{sink} type and \texttt{options}, \texttt{Spark} periodically writes new data from the state store to the destination
+\end{itemize}
+
+
+\subsection{Ingesting Streaming Data}
+\begin{itemize}
+	\item Use \texttt{spark.readStream} to create streaming \texttt{DataFrame} and specify \texttt{source type, options}, and \texttt{schema}
+	\item Use \texttt{spark.writeStream} to write the output of the streaming \texttt{DataFrame} to the destination and specify \texttt{sink type, options}, and \texttt{trigger}
+	\item \texttt{Source} types: 
+	\begin{itemize}
+		\item \texttt{file, socket, rate, memory, delta}
+		\item Syntax: \texttt{spark.readStream.format("<source>").load()}
+	\end{itemize}
+	\item \texttt{Sink} types: 
+	\begin{itemize}
+		\item \texttt{console, file, memory, delta, foreach, foreachBatch} $\to$ write transformed output to external storage systems
+		\item Syntax: \texttt{spark.writeStream.format("<source>").start()}
+	\end{itemize}
+	\item Output modes:
+	\begin{itemize}
+		\item \texttt{append}: writes only new records to the destination, does not modify existing rows, e.g., no aggregations
+		\item \texttt{update}: writes only updated records to the destination, adds new rows based on values in the stream, e.g.,  aggregations with windows
+		\item \texttt{complete}: write all records to the destination, e.g., aggregations without windows
+		\item Syntax: \texttt{.outputMode("<mode>")}
+	\end{itemize}
+	\item \texttt{Trigger} types:
+	\begin{itemize}
+		\item Processing time \texttt{triggers}:
+		\begin{itemize}
+			\item Executes a micro-batch at a regular interval based on the processing time
+			\item Syntax: \texttt{.trigger(processingTime="30 seconds").start()}
+		\end{itemize}
+		\item One-time \texttt{trigger}:
+		\begin{itemize}
+			\item Executes a single micro-batch and then terminates the query
+			\item Syntax: \texttt{.trigger(once=True)}
+		\end{itemize}
+		\item Default \texttt{trigger}: 
+		\begin{itemize}
+			\item Executes a micro-batch as soon as the previous one finishes
+			\item Maximizes throughput of a streaming application by processing data as fast as possible
+		\end{itemize}	
+	\end{itemize}
+	\item Schema inference when using \texttt{from\_json} or \texttt{from\_avro} to perform schema validation and evolution
+	\item Offset management (\texttt{checkpoints}): 
+	\begin{itemize}
+		\item Ensure that the query can resume from where it left off in case of failures or restarts
+		\item Save intermediate state of a query to a durable storage system that should be accessible from all nodes in the cluster (e.g., \texttt{HDFS, S3, Azure Blob Storage})
+		\item Allow streaming query to be modified and still resume from where it left off $\to$ recovery semantics
+		\item Allow streaming query to report its progress asynchronously to an external system $\to$ asynchronous progress tracking
+		\item Syntax: \texttt{.option("checkpointLocation", "<path>/checkpoint")}
+	\end{itemize}
+	\item \texttt{Watermark}: 
+	\begin{itemize}
+		\item Handles late data in streams and allows to specify threshold of how late the data can still be considered for processing
+		\item Trade-off between latency and completeness
+		\item Works well for streaming apps that have a bounded delay in the data source (e.g., sensors)
+		\item Does not work well for applications that have an unbounded delay (e.g., historical data, user data)
+		\item Syntax: \texttt{df.withWatermark("<column>", "<expression>")}
+	\end{itemize}
+\end{itemize}
+
+\subsection{Reading from real-time Sources (\texttt{Kafka})}
+\begin{itemize}
+	\item \texttt{spark-sql-kafka-0-10} library provides source and sink for \texttt{Kafka}
+	\item Source allows to read data from \texttt{Kafka} topics or partitions as a stream of records $\to$ each consists of a \texttt{key, value, offset, partition, timestamp}, and optional \texttt{headers}
+	\item Sink allows to write data to \texttt{Kafka} topics as a stream of records $\to$ each consists of a \texttt{key, value}, and optional \texttt{headers}
+	\item When creating a \texttt{DataFrame} from \texttt{Kafka} using \texttt{readStream}, specify options such as bootstrap servers, topic name/pattern, and the starting/ending offset:
+	\begin{itemize}
+		\item Bootstrap server: Address of the \texttt{Kafka} brokers that the source connects to
+		\item Topic name/pattern: Determines which topics or partitions to subscribe to
+		\item Start/end offsets: Determine range of records to read from each partition, e.g., \texttt{earliest, latest} or \texttt{none}
+	\end{itemize}
+	\item When writing output of the stream destination using \texttt{writeStream}, specify \texttt{output} mode, \texttt{format}, \texttt{trigger}, and \texttt{interval} $\to$ determines how output table is updated when new data arrives
+	\item \texttt{Format} determines destination system, e.g., \texttt{console, filesystem }(\texttt{PARQUET, CSV, JSON}), database (\texttt{jdbc}), or \texttt{Kafka}
+	\item \hyperref[streaming_python]{Phyton implementation}
+\end{itemize}
+
+\newpage
+\section{Processing Streaming Data}
+\begin{itemize}
+	\item \texttt{Delta Lake} as \texttt{sink}:
+	\begin{itemize}
+		\item Uses transaction log to keep track of all changes made to a table (ordered list of atomic, deterministic, and serializable commits that have occurred in the table)
+		\item Ensures that only one writer can commit at a time by using \texttt{optimistic concurrency control (OCC)}
+	\end{itemize}
+	\item Idempotent stream: the same data can be written to a \texttt{Delta Table} multiple times without changing the final result $\to$ useful for exactly-once processing data
+\end{itemize}
+
+
+\newpage
+\section{SQL Coding}
+\subsection{Delta Table} \label{delta_table_sql} 
+\subsubsection{Creating a Delta Table or View} 
+\begin{lstlisting}
+CREATE TABLE <schema>.<table> (
+	id LONG,
+	country STRING,
+	capital STRING
+) USING DELTA;
+
+# Load data - INSERT INTO
+INSERT INTO <schema>.<table> VALUES
+	(1, "UK", "London"),
+	(2, "Canada", "Toronto");
+
+
+# Alternatively
+INSERT INTO <schema>.<table_name>
+SELECT * FROM <file_format>. `<source_table>.<file_format>`;
+
+# CTAS - Combines creation and insertion into single operation
+CREATE TABLE <schema>.<new_table> 
+USING DELTA
+AS SELECT * FROM <schema>.<table>;
+
+# Alternative
+CREATE TABLE <table> USING DELTA
+AS SELECT *
+FROM read_files(
+	"<file_path>",
+	format => "<format>",
+	sep => "<sep>"
+)
+
+# Temp View
+CREATE OR REPLACE TEMP VIEW <view> AS
+SELECT *
+FROM <format>.`<file_path>`;
+\end{lstlisting}
+
+\subsubsection{Reading a Delta Table}
+\begin{lstlisting}
+SELECT * FROM <file_format>. `<file_path>`
+LIMIT 10;
+
+# Alternativ
+SELECT * FROM <schema>.<table>;
+
+# Time Travel
+SELECT DISTINCT <column> from <schema>.<table> 
+VERSION AS OF 1;
+
+# Update data
+UPDATE default.countries
+SET {country = "U.K"}
+WHERE id = 1;
+
+# COPY INTO
+COPY INTO <table>
+FROM "<file_path>"
+FILEFORMAT <file_format>
+COPY_OPTIONS("..." = "...")
+
+# Delete
+DELETE FROM <schema>.<table>
+WHERE id=1;
+\end{lstlisting}
+
+\subsubsection{Optimizing Delta Tables} \label{optimize_sql}
+\begin{lstlisting}
+# Compaction
+OPTIMIZE "file_path"
+
+# Z-Ordering
+OPTIMIZE "<file_path>" 
+ZORDER BY (<column>)
+
+
+# Partitioning
+\end{lstlisting}
+
+\subsubsection{Tagging, Commenting, and Capturing Metadata}
+\begin{lstlisting}
+# Add a comment on a table
+COMMENT ON TABLE <catalog>.<schema>.<table> 
+IS <comment>;
+
+# Add a tag to a table
+ALTER TABLE <catalog>.<schema>.<table> 
+SET TAGS (
+	"<tag1>"="<description1>",
+	"<tag2>"="<description2>"
+);
+
+# Remove a tag from a table
+ALTER TABLE <catalog>.<schema>.<table>
+UNSET TAGS ("<tag1>", "<tag2>");
+
+# Add comments to table columns
+ALTER TABLE <catalog>.<schema>.<table>
+ALTER COLUMN <column> COMMENT "<comment>";
+
+# Add tags to column
+ALTER TABLE <catalog>.<schema>.<table>
+ALTER COLUMN <column> SET TAGS (
+	"<tag>"="<description>"
+)
+
+# Remove tag from column
+ALTER TABLE <catalog>.<schema>.<table>
+ALTER COLUMN <col> UNSET TAGS ("<tag>");
+\end{lstlisting}
+
+\newpage
+\subsection{Delta Live Table} \label{delta_live_sql}
+\subsubsection{Data Quality and Validation Rules}
+\begin{lstlisting}
+# Create Live Table for customer data
+CREATE OR REFRESH LIVE TABLE customers (
+CONSTRAINT 
+	valid_customer_key 
+	EXPECT (c_custkey IS NOT NULL)
+	ON VIOLATION DROP ROW,
+CONSTRAINT
+	<expectation_name>
+	EXPECT (<EXPECTATION_EXPRESSION>)
+	ON VALIDATION <ACTION>
+) AS SELECT * FROM <catalog>.<schema>.customers;
+
+# Deduplicate records
+CREATE TEMPORARY LIVE TABLE duplicate_customers_test (
+	CONSTRAINT unique_customer_key 
+	EXCPECT (cnt=1)
+	ON VIOLATION DROP ROW
+) AS
+SELECT
+	c_custkey, count(*) AS cnt
+FROM
+	live.customers
+GROUP ALL;
+\end{lstlisting}
+
+
+\newpage
+\subsection{Unity Catalog} \label{unity_sql}
+\subsubsection{Create Catalog, Volume, View}
+\begin{lstlisting}
+# Create a catalog
+CREATE CATALOG <catalog>;
+
+# Create a schema
+USE CATALOG <catalog>;
+CREATE SCHEMA <schema>;
+
+# Create a volume
+CREATE VOLUME <catalog>.<schema>.<volume> 
+LOCATION "<path>";
+
+# Create a table
+USE CATALOG <catalog>;
+USE SCHEMA <schema>;
+CREATE TABLE IF NOT EXISTS <table> (
+	<col_1> <TYPE>,
+	<col_2> <TYPE>
+);
+INSERT INTO <table>
+VALUES (<value>, <value>);
+
+# Create a view
+CREATE OR REPLACE VIEW <table> (<col_1>, <col_2>)
+COMMENT "<comment>"
+AS SELECT <col_1>, ...
+FROM <table>;
+\end{lstlisting}
+
+\subsubsection{Row Filtering}
+\begin{lstlisting}
+# Row filtering - create function
+CREATE FUNCTION <function> (<column_name> <column_type>, ...)
+RETURN {<filter_clause_whose_input_must_be_a_boolean>};
+
+# Apply filtering
+ALTER TABLE <table> SET ROW FILTER <function_nyme> ON
+(<column_name>, ...);
+
+# Modify row filters
+CREATE OR REPLACE FUNCTION 
+<function> (<column_name> <column_type>);
+
+# Delete row filter
+ALTER TABLE <table> DROP ROW FILTER;
+DROP FUNCTION <function>;
+\end{lstlisting}
+Perform \texttt{ALTER TABLE <table> DROP ROW FILTER} before dropping the function or the table will be in an inaccessible state.
+
+\subsubsection{Column Masking}
+Apply masking functions (\texttt{UDFs}) to table columns, such as replacing, hashing, or redacting original values in order to control visibility of sensitive data.
+\begin{lstlisting}
+# Create function 
+CREATE FUNCTION <function> (<column_name>, <column_type>, ...)
+RETURN {<expression_with_same_type_as_first_column};
+
+# Apply column mask
+ALTER TABLE <table> ALTER COLUMN <column> 
+SET MASK <function>;
+
+# Or apply when creating the table
+CREATE TABLE <table> (
+	<column> <column_type> MASK <function>
+);
+
+# Remove column mask from column
+ALTER TABLE <table> ALTER COLUMN <column_where_mask_is_applied>
+DROP MASK;
+DROP FUNCTION <function>;
+\end{lstlisting}
+
+
+
+\newpage
+\section{Python Coding}
+\subsection{Delta Table} \label{delta_table_python}
+\subsubsection{Creating a Delta Table} 
+\begin{lstlisting}
+delta_table = (DeltaTable.create(spark)
+	.tableName("<schema>.<table>")
+	.addColumn("id", dataType=LongType(), nullable=False)
+	.addColumn("country", dataType=StringType(), nullable=False)
+	.addColumn("capital", dataType=StringType(), nullable=False)
+	.execute()
+)
+
+# Load data - INSERT INTO
+data = [
+	(1, "UK", "London"),
+	(2, "Canada", "Toronto")
+]
+schema = ["id", "country", "capital"]
+df = spark.createDataFrame(data, schema=schema)
+(df.write
+	.format("delta")
+	.insertInto("<schema>.<table>")
+)
+
+# Alternatively
+# Read data into a DataFrame and write it to Delta Table
+df = (spark.read
+	.format("<file_format>")
+	.option("header", "true")
+	.load("file_path")
+)
+(df.write
+	.format("delta")
+	.mode("overwrite")
+	.saveAsTable("<schema>.<table>")
+)
+
+# Append data
+data = [(3, "United States", "Washington D.C.")]
+schema = ["id", "country", "capital"]
+df = spark.createDataFrame(data, schema=schema)
+(df.write
+	.format("delta")
+	.mode("append")
+	.saveAsTable("<schema>.<table>")
+)
+\end{lstlisting}
+
+
+\subsubsection{Reading a Delta Table}
+\begin{lstlisting}
+df = spark.read.format("<file_format>").load("<file_path>")
+
+# Alternativ
+from delta.tables import DeltaTable
+
+delta_table = DeltaTable.forName(spark, "<schema>.<table>")
+delta_table.toDF().show()
+
+# Time travel
+(spark.read
+	.option("versionAsOf", "1")
+	.load("<table>.<file_format>")
+	.select("<column>").distinct()
+) 
+
+# Anzahl Rows zu bestimmtem Zeitpunkt
+(spark.read
+	.option("timestampAsOf", "YYYY-MM-DD")
+	.load("<table>.<file_format>")
+	.count()
+)
+
+# Restore Table
+delta_table = DeltaTable.forPath(spark, "<file_path>") 
+delta_table.restoreToVersion(3)
+
+# Update table
+delta_table_df.update(
+	condition = "id=1",
+	set = {"country": "'U.K.'"}
+)
+
+# Delete from table
+delta_table.delete(F.col("id") == 1)
+\end{lstlisting}
+
+\newpage
+\subsubsection{Optimizing Delta Tables} \label{optimize_python}
+\begin{lstlisting}
+# Compaction
+delta_table = DeltaTable.forPath(spark, "<file_path>")
+delta_table.optimize().executeCompaction()
+
+# Z-Ordering
+delta_table = DeltaTable.forPath(spark, "<file_path>")
+delta_table.optimize().executeZOrderBy("<column>")
+
+# Partitioning
+df = (spark.read
+	.format("<file_format>")
+	.option(...)
+	.load("<file_path>")
+)
+
+(df.write
+	.format("delta")
+	.mode("overwrite")
+	.partitionBy("<column>")
+	.save("<file_path>")
+)
+\end{lstlisting}
+
+\subsection{Delta Live Table} \label{delta_live_python}
+
+\subsection{Streaming} \label{streaming_python}
+\begin{lstlisting}
+# Create streaming DataFrame
+df = (spark.readStream
+	.format(...)
+	.option(...)
+	.load()
+)
+
+# Write output
+query = (df.writeStream
+	.outputMode(...)
+	.format(...)
+	.start()
+)
+\end{lstlisting}
+\end{document}
