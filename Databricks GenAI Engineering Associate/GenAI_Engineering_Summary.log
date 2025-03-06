@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.15)  6 MAR 2025 14:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.15)  6 MAR 2025 14:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Docker.tex
-(./Docker.tex
+**GenAI_Engineering_Summary.tex
+(./GenAI_Engineering_Summary.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (c:/texlive/2024/texmf-dist/tex/latex/koma-script/scrartcl.cls
@@ -527,8 +527,8 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count312
 \l__pdf_internal_box=\box59
 )
-(./Docker.aux)
-\openout1 = `Docker.aux'.
+(./GenAI_Engineering_Summary.aux)
+\openout1 = `GenAI_Engineering_Summary.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 46.
 LaTeX Font Info:    ... okay on input line 46.
@@ -557,7 +557,8 @@ Package scrbase Info: activating english \listfigurename on input line 46.
 Package scrbase Info: activating english \listtablename on input line 46.
 Package scrbase Info: activating english \refname on input line 46.
 Package scrbase Info: activating english \indexname on input line 46.
- (c:/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+
+(c:/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count313
 \scratchdimen=\dimen173
@@ -587,10 +588,10 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: listings package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package hyperref Info: Link coloring OFF on input line 46.
- (./Docker.out)
-(./Docker.out)
+
+(./GenAI_Engineering_Summary.out) (./GenAI_Engineering_Summary.out)
 \@outlinefile=\write3
-\openout3 = `Docker.out'.
+\openout3 = `GenAI_Engineering_Summary.out'.
 
 Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           Using `bookmark' together with `hyperref' is recommended,
@@ -600,7 +601,8 @@ Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           you can avoid this message adding:
 (scrartcl)             \usepackage{bookmark}
 (scrartcl)           before \begin{document} on input line 46.
- (c:/texlive/2024/texmf-dist/tex/latex/bookmark/bookmark.sty
+
+(c:/texlive/2024/texmf-dist/tex/latex/bookmark/bookmark.sty
 Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
 
 (c:/texlive/2024/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
@@ -611,7 +613,8 @@ File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO
 \c@lstlisting=\count320
 Package tocbasic Info: setting babel extension for `lol' on input line 46.
 \scr@dte@lstlisting@maxnumwidth=\skip71
- (./Docker.toc
+
+(./GenAI_Engineering_Summary.toc
 LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
 
 (c:/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -623,7 +626,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ))
 \tf@toc=\write4
-\openout4 = `Docker.toc'.
+\openout4 = `GenAI_Engineering_Summary.toc'.
 
 
 
@@ -635,22 +638,16 @@ LaTeX Font Warning: Font shape `T1/cmr/m/n' in size <149.37698> not available
 4/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
 
 ]
-Overfull \hbox (5.55695pt too wide) in paragraph at lines 97--98
-[]\T1/cmr/m/n/10.95 Are writ-ten by the user whereas an \T1/cmtt/m/n/10.95 imag
-e \T1/cmr/m/n/10.95 is writ-ten by the ma-chine based on the \T1/cmtt/m/n/10.95
- Dockerfile 
- []
 
+[2]
 
+[3]
 
-[2{c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Overfull \hbox (31.71506pt too wide) in paragraph at lines 132--153
-[] 
- []
+[4]
 
+[5]
 
-
-[3] (./Docker.aux)
+[6] (./GenAI_Engineering_Summary.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -660,28 +657,27 @@ L3 programming layer <2025-01-18>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 113.54698pt have occurred.
 
-Package rerunfilecheck Info: File `Docker.out' has not changed.
+Package rerunfilecheck Info: File `GenAI_Engineering_Summary.out' has not chang
+ed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 18463 strings out of 473201
- 317012 string characters out of 5720299
- 957464 words of memory out of 5000000
- 41460 multiletter control sequences out of 15000+600000
- 569552 words of font info for 63 fonts, out of 8000000 for 9000
+ 18155 strings out of 473201
+ 314346 string characters out of 5720299
+ 861502 words of memory out of 5000000
+ 41169 multiletter control sequences out of 15000+600000
+ 568114 words of font info for 60 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,12n,107p,10922b,1204s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb><c:/texl
-ive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c:/texlive/2024/t
-exmf-dist/fonts/type1/public/cm-super/sfrm3583.pfb><c:/texlive/2024/texmf-dist/
-fonts/type1/public/cm-super/sfsx1095.pfb><c:/texlive/2024/texmf-dist/fonts/type
-1/public/cm-super/sfsx1200.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/c
-m-super/sfsx1440.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sf
-tt1095.pfb>
-Output written on Docker.pdf (3 pages, 144255 bytes).
+ 108i,12n,107p,10941b,458s stack positions out of 10000i,1000n,20000p,200000b,200000s
+<c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c:/texl
+ive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm3583.pfb><c:/texlive/2024/t
+exmf-dist/fonts/type1/public/cm-super/sfsx1095.pfb><c:/texlive/2024/texmf-dist/
+fonts/type1/public/cm-super/sfsx1200.pfb><c:/texlive/2024/texmf-dist/fonts/type
+1/public/cm-super/sfsx1440.pfb>
+Output written on GenAI_Engineering_Summary.pdf (6 pages, 88911 bytes).
 PDF statistics:
- 120 PDF objects out of 1000 (max. 8388607)
- 99 compressed objects within 1 object stream
- 29 named destinations out of 1000 (max. 500000)
- 57 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 104 PDF objects out of 1000 (max. 8388607)
+ 85 compressed objects within 1 object stream
+ 16 named destinations out of 1000 (max. 500000)
+ 65 words of extra memory for PDF output out of 10000 (max. 10000000)
 

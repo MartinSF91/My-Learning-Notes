@@ -1,0 +1,10 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Fundamentals}{2}{section.1}%
+\contentsline {subsection}{\numberline {1.1}GenAI Basics}{2}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}LLMs and GenAI}{2}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Legal and Ethical Considerations}{2}{subsection.1.3}%
+\contentsline {section}{\numberline {2}Solution Development}{3}{section.2}%
+\contentsline {section}{\numberline {3}Application Development}{4}{section.3}%
+\contentsline {section}{\numberline {4}Application Evaluation and Governance}{5}{section.4}%
+\contentsline {section}{\numberline {5}Application Deployment and Monitoring}{6}{section.5}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
