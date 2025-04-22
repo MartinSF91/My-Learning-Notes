@@ -1,0 +1,75 @@
+
+\documentclass[11pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{ucs}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption} 		% Subfigures
+\usepackage{hyperref}
+\usepackage{fullpage}	
+\usepackage{color}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\usepackage[font=footnotesize]{caption}
+\usepackage{draftwatermark}
+\SetWatermarkText{Martin Fané}
+\SetWatermarkScale{3}
+\SetWatermarkColor[gray]{0.99}
+\usepackage[numindex,nottoc,section]{} 
+
+
+\begin{document}
+\subsection*{Data Engineering Lifecycle}
+\begin{itemize}
+	\item Schema: Defines the hierarchical organization of data
+	\item Schemaless: Application defines the schema as data is written
+	\item Fixed schema: Enforced in the DB to which application writes must conform
+	\item Ingestion:
+	\begin{itemize}
+		\item Push: Source system writes data out to a target
+		\item Pull: Data is retrieved from a source system
+	\end{itemize}
+	\item Featurization: Extract and enhance data features useful for training ML models
+	\item BI: 
+	\begin{itemize}
+		\item Describe a business's past and current state
+		\item Data is stored in a clean but fairly raw form with minimal postprocessing business logic
+	\end{itemize}
+	\item Operational Analytics: 
+	\begin{itemize}
+		\item Fine-grained details of operations, e.g., live view of inventory
+		\item Focused on present and doesn't concern historical trends
+	\end{itemize}
+	\item Security: Principle of least priviledge
+	\item Data Management: Encompasses the set of best practices DE will use to accomplish the task of managing the data lifecycle technically and strategically 
+	\item Data Governance: Ensure quality, integrity, security, and usability of the data collected by an organization
+	\item Metadata:
+	\begin{itemize}
+		\item Business: Non-technical questions about who, what, where, and how and provides a DE with the right context and definitions to properly use the data
+		\item Technical: Describes the data created and used by systems across the DE lifecycle
+		\item Data Lineage: Tracks the origin and changes to data
+		\item Schema: Describes structure of data stored in a system
+		\item Operational: Used to determine whether a process succeeded or failed and the data involved in the process
+	\end{itemize}
+	\item Data Accountability: Assigning an individual to govern a portition of data
+	\item Data Quality: 
+	\begin{itemize}
+		\item Quality tests, ensuring data conformance to schema expectations, data completions, and precision
+		\item Accuracy: Is the data factuall correct? Duplicated values? Are the numeric values accurate?
+		\item Completeness: Are the records complete? Do all required fields contain valid values? 
+	\end{itemize}
+	\item Master Data: Business entities (employees, customers etc.)
+	\item Master Data Management: Practice of building consistent entity definitions known as golden records
+	\item Data Modeling and Design: Process for converting data into usable form
+	\item Data Lineage:
+	\begin{itemize}
+		\item Provides a trail of data's evolution as it moves through various systems and workflows
+		\item Tracks both the systems that process the data and the upstream data it depends on
+	\end{itemize}
+	\item Data Integration: Process of integrating data across tools and processes. Happens through general-purpose APIs rather than DB connections
+	\item Orchestration: Coordinating many jobs to run as quickly and efficiently as possible on a scheduled cadence (DAGs)
+\end{itemize}
+
+\end{document}
