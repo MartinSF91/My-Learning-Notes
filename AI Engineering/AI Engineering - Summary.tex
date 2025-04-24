@@ -75,7 +75,14 @@
 	\item Sampling strategies:
 	\begin{itemize}
 		\item Temperature: A higher temperature reduces the probabilities of common tokens and increases the probability of rarer tokens
-		\item Temperature of 0.7 is often used for creative use cases
+		\item Top-k: Pick top-k logits to perform softmax over these $\to$ smaler k makes the text more predictable but less interesting
+		\item Top-p: 
+		\begin{itemize}
+			\item Allows for a more dynamic selection of values to be sampled from than top-k
+			\item Model sums the probabilities of the most likely next values in descending order and stops when the sum reaches p $\to$ only the values within the cumulative probability are considered
+			\item Focuses only on the set of most relevant values for each context and allows outputs to be more contextually appropriate
+			\item Typically range from 0.95 to 0.99
+		\end{itemize}
 	\end{itemize}
 	\item Logit vector:
 	\begin{itemize}
