@@ -1,0 +1,128 @@
+
+\documentclass[11pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{ucs}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption} 		% Subfigures
+\usepackage{hyperref}
+\usepackage{fullpage}	
+\usepackage{color}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\usepackage[font=footnotesize]{caption}
+\usepackage{draftwatermark}
+\SetWatermarkText{Martin Fané}
+\SetWatermarkScale{3}
+\SetWatermarkColor[gray]{0.99}
+\usepackage[numindex,nottoc,section]{} 
+
+
+\begin{document}
+\subsection*{Introduction}
+\begin{itemize}
+	\item AI Engineering:
+	\begin{itemize}
+		\item Focuses less on modeling and training, and more on model adaption and evaluation
+		\item Works with models that are bigger and consume more compute resources, and incur higher latency than traditional ML models
+	\end{itemize}
+	\item Token: 
+	\begin{itemize}
+		\item Basic unit of a language model (can be a word, character, or part of a word)
+		\item Allow models to break words into meaningful components
+		\item There are fewer unique tokens than unique words
+	\end{itemize}
+	\item Masked language model: Trained to predict a token anywhere in a sequence, using the context from both before and after the missing token $\to$ fill in the blank
+	\item Autoregressive language model: 
+	\begin{itemize}
+		\item Trained to predict the next token in a sequence, using only the preceding tokens
+		\item Can continually generate one token after another
+	\end{itemize}
+	\item Generative models can generate open-ended outputs
+	\item Classical ML models are closed-ended since they only can outputs that are among predefined values
+	\item Completions are predictions based on probabilities, and not guaranteed to be correct
+	\item Self-supervision:
+	\begin{itemize}
+		\item Model infers labels from the input data
+		\item Language modeling is self-supervised because each input sequence provides both the labels (tokens to be predicted) and the contexts the model can use to predict these labels $\to$ labels are inferred from the input data
+	\end{itemize}
+	\item Foundation model: Can be built upon for different needs
+	\item Multimodal model: Models that can work with more than one data modality
+	\item Agents: AI that can plan and use tools
+	\item Three layers of AI stack:
+	\begin{itemize}
+		\item Application development: Provide a model with good prompts and necessary context
+		\item Model development: Tooling for developing models, including frameworks for modeling, training, finetuning, and inference optimization
+		\item Infrastructure: Tooling for model infrastructure, including tooling for model serving, managing data and compute, and monitoring
+	\end{itemize}
+	\item Inference optimization: Make models faster and cheaper
+	\item Prompt engineering: Get AI models to express the desirable behaviors from the input alone, without changing the model weights
+\end{itemize}
+
+\subsection*{Foundation Models}
+\begin{itemize}
+	\item Sampling: 
+	\begin{itemize}
+		\item Process of constructing output
+		\item How does a model chooses an output from all possible options
+		\item Makes an AI's output probabilistic
+		\item To generate the next token, the model first computes the probability distribution over all tokens in the vocabulary
+		\item Greedy sampling: Always pick the most likely outcome $\to$ creates boring outputs since the most common words are responded
+		\item Instead of picking the most likely token, the model can sample the next tokens according to the probability distribution
+	\end{itemize}
+	\item Sampling strategies:
+	\begin{itemize}
+		\item Temperature: A higher temperature reduces the probabilities of common tokens and increases the probability of rarer tokens
+		\item Temperature of 0.7 is often used for creative use cases
+	\end{itemize}
+	\item Logit vector:
+	\begin{itemize}
+		\item Corresponds to one possible value $\to$ one token in the model's vocabulary
+		\item Logit vector size is the size of the vocabulary
+		\item Do not represent probabilities
+		\item To convert logits to probabilities, a softmax layer is often used
+	\end{itemize}
+	\item Sparsity allows for more efficient data storage and computation (large percentage of zero-value parameters)
+	\item Number of tokens in a model's dataset isn't the same as its number of training tokens $\to$ the number of training tokens measures the tokens that the model is trained on
+	\item FLOP: Unit for a model's compute requirement $\to$ measures the number of floating point operations performed for a certain task
+	\item Utilization: Measures how much of the maximum compute capacity one can use
+	\item Post-Training:
+	\begin{itemize}
+		\item Issues of a pre-trained model: 
+		\begin{itemize}
+			\item Self-supervision optimizes the model for text completion, not conversations
+			\item Outputs can be biased or wrong
+		\end{itemize}
+		\item Solution:
+		\begin{itemize}
+			\item Supervised finetuning (SFT): finetune the pre-trained model on high-quality instruction data to optimize models for conversations instead of completion
+			\item Preference finetuning: Finetune the model to output responses that aligh with human preferences
+		\end{itemize}
+		\item Preference finetuning is typically done with reinforcement learning or reinforcement learning from human feedback (RLHF)
+		\item Pre-training optimizes token-level quality
+		\item Post-training optimizes the model to generate responses that users prefer
+	\end{itemize}
+	\item RLHF:
+	\begin{itemize}
+		\item Train a reward model that scores the foundation model's output
+		\item Optimize the foundation model to generate responses for which the reward model will give maximal scores
+	\end{itemize}
+	\item Reward model: 
+	\begin{itemize}
+		\item Outputs a score for how good the response is
+		\item Generate multiple responses for each prompt and the resulting data is comparison data with the format (prompt, winning\_response, losing\_response)
+	\end{itemize}
+	\item Robustness: A model is robust if it doesn't dramatically change its outputs with small variations in the input
+	\item Inconsistency: Generating very different responses for the same or slightly different prompts
+	\item Hallucination:
+	\begin{itemize}
+		\item Response that isn't grounded in facts
+		\item Cannot differentiate between the data it's given and the data it generates
+		\item Snowball hallucinations: Model continues ti justify the initial wrong assumption
+		\item Also caused by the mismatch between the model's internal knowledge and the labeler's internal knowledge
+	\end{itemize}
+\end{itemize}
+
+\end{document}
