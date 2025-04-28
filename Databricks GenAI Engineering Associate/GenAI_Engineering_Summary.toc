@@ -1,7 +1,6 @@
 \babel@toc {english}{}\relax 
-\contentsline {section}{\numberline {1}Fundamentals}{2}{section.1}%
-\contentsline {section}{\numberline {2}Solution Development}{3}{section.2}%
-\contentsline {section}{\numberline {3}Application Development}{5}{section.3}%
-\contentsline {section}{\numberline {4}Application Evaluation and Governance}{6}{section.4}%
-\contentsline {section}{\numberline {5}Application Deployment and Monitoring}{7}{section.5}%
+\contentsline {section}{\numberline {1}Solution Development}{3}{section.1}%
+\contentsline {section}{\numberline {2}Application Development}{7}{section.2}%
+\contentsline {section}{\numberline {3}Application Evaluation and Governance}{9}{section.3}%
+\contentsline {section}{\numberline {4}Application Deployment and Monitoring}{10}{section.4}%
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 
