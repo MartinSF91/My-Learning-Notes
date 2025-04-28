@@ -33,6 +33,7 @@
 		\item Basic unit of a language model (can be a word, character, or part of a word)
 		\item Allow models to break words into meaningful components
 		\item There are fewer unique tokens than unique words
+		\item Number of tokens in a model's dataset isn't the same as its number of training tokens $\to$ the number of training tokens measures the tokens that the model is trained on
 	\end{itemize}
 	\item Masked language model: Trained to predict a token anywhere in a sequence, using the context from both before and after the missing token $\to$ fill in the blank
 	\item Autoregressive language model: 
@@ -62,16 +63,14 @@
 \end{itemize}
 
 \subsection*{Foundation Models}
+\subsubsection*{Sampling}
 \begin{itemize}
-	\item Sampling: 
-	\begin{itemize}
-		\item Process of constructing output
-		\item How does a model chooses an output from all possible options
-		\item Makes an AI's output probabilistic
-		\item To generate the next token, the model first computes the probability distribution over all tokens in the vocabulary
-		\item Greedy sampling: Always pick the most likely outcome $\to$ creates boring outputs since the most common words are responded
-		\item Instead of picking the most likely token, the model can sample the next tokens according to the probability distribution
-	\end{itemize}
+	\item Process of constructing output
+	\item How does a model chooses an output from all possible options
+	\item Makes an AI's output probabilistic
+	\item To generate the next token, the model first computes the probability distribution over all tokens in the vocabulary
+	\item Greedy sampling: Always pick the most likely outcome $\to$ creates boring outputs since the most common words are responded
+	\item Instead of picking the most likely token, the model can sample the next tokens according to the probability distribution
 	\item Sampling strategies:
 	\begin{itemize}
 		\item Temperature: A higher temperature reduces the probabilities of common tokens and increases the probability of rarer tokens
@@ -92,7 +91,6 @@
 		\item To convert logits to probabilities, a softmax layer is often used
 	\end{itemize}
 	\item Sparsity allows for more efficient data storage and computation (large percentage of zero-value parameters)
-	\item Number of tokens in a model's dataset isn't the same as its number of training tokens $\to$ the number of training tokens measures the tokens that the model is trained on
 	\item FLOP: Unit for a model's compute requirement $\to$ measures the number of floating point operations performed for a certain task
 	\item Utilization: Measures how much of the maximum compute capacity one can use
 	\item Post-Training:
@@ -129,6 +127,87 @@
 		\item Cannot differentiate between the data it's given and the data it generates
 		\item Snowball hallucinations: Model continues ti justify the initial wrong assumption
 		\item Also caused by the mismatch between the model's internal knowledge and the labeler's internal knowledge
+	\end{itemize}
+\end{itemize}
+
+
+\subsection*{Evaluation Methodology}
+\subsubsection*{Metrics}
+\begin{itemize}
+	\item Most autoregressive LMs are trained using cross entropy or perplexity (predictive accuracy metrics $\to$ the more accurately, the lower the metrics)
+	\item Entropy:
+	\begin{itemize}
+		\item Measures how much information, on average, a token carries $\to$ the higher the entropy, the more information
+		\item Measures how difficult it is to predict what comes next in a language $\to$ the lower the language's entropy, the more predictable that language
+	\end{itemize}
+	\item Cross Entropy on a dataset:
+	\begin{itemize}
+		\item When training a LM on a dataset, the goal is to get the model learn the distribution of this training data
+		\item Measures how difficult it is for the LM to predict what comes next in this dataset
+		\item An LM is trained to minimize its cross entropy with respect to the training data
+		\item A model's cross entropy is its approximation of the entropy of its training data
+	\end{itemize}
+	\item Bits-per-byte (BPB): Number of bits an LM needs to represent one byte of the original training data
+	\item Perplexity: 
+	\begin{itemize}
+		\item Exponential of entropy and cross entropy
+		\item Rules:
+		\begin{itemize}
+			\item More structured data gives lower expected perplexity
+			\item The bigger the vocabulary, the higher the perplexity
+			\item The longer the context, the lower the perplexity
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Exact Evaluation}
+\begin{itemize}
+	\item Judgment without ambiguity
+	\item Approaches:
+	\begin{itemize}
+		\item Functional Correctness: Evaluating a system based on whether it performs the intended functionality
+		\item Similarity Measurements Against Reference Data: Evaluate AI's output against reference data
+	\end{itemize}
+	\item Ground truth: Reference responses
+	\item Similarity measurement: Asking an evaluator, exact match, lexical similarity, semantic similarity
+	\item Exact match: Generated response matches one of the reference responses exactly
+	\item Lexical similarity: 
+	\begin{itemize}
+		\item Measures how much two texts overlap $\to$ Counting how many tokens two texts have in common
+		\item Approximate string matching (fuzzy matching): Measures similarity between two texts by counting how many edits it'd need to convert from one text to another (edit distance)
+	\end{itemize}
+	\item Semantic similarity: Aims to compute the similarity in semantics, requiring embeddings
+	\item Embeddings: Numerical representation (vector) that aims to capture the meaning of the original data
+\end{itemize}
+
+
+
+\subsubsection*{AI as Judge}
+\begin{itemize}
+	\item Using AI to evaluate AI
+	\item Approaches:
+	\begin{itemize}
+		\item Evaluate data by itself
+		\item Compare a generated response to a reference response
+		\item Compare two generated responses and determine which one is better
+	\end{itemize}
+	\item Challenges:
+	\begin{itemize}
+		\item AI as a judge criteria aren't standardized
+		\item AIs are subjective $\to$ Evaluation results can change based on the judge model and prompt
+		\item Probabilistic nature of AI makes it seem too unreliable to act as evaluator
+		\item Inconsistency: Same judge, on the same input, can output different scores if prompted differently
+		\item Criteria ambiguity: Misinterpret and misuse judge metrics since they are not standardized
+		\item Evaluation should be fixed, but AI judges also change over time
+		\item Self-bias: Model favors own response over response from other models
+		\item first-position-bias: AI judge my favor the first answer in a pairwise comparison
+		\item Verbosity bias: Favoring lengthier answers, regardless of their quality
+	\end{itemize}
+	\item Judge models:
+	\begin{itemize}
+		\item Reward model: Takes in (prompt, response) pair and scores how good the response is given the prompt
+		\item Reference-based judge: Evaluates the generated response with respect to one or more references
+		\item Preference model: Takes in (prompt, response 1, response 2) as input and outputs which of the two responses is better for the given prompt
 	\end{itemize}
 \end{itemize}
 
