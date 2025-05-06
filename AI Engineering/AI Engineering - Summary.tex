@@ -211,4 +211,47 @@
 	\end{itemize}
 \end{itemize}
 
+
+\section*{Evaluate AI Systems}
+\subsection*{Evaluation Criteria}
+\begin{itemize}
+	\item Evaluation-driven development: Define evaluation criteria before building the application
+	\item Evaluation criteria:
+	\begin{itemize}
+		\item Domain-specific capability
+		\item Generation capability
+		\item Instruction-following capability
+		\item Cost and latency
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Domain-Specific Capability}
+\begin{itemize}
+	\item Domain-specific capabilities are commonly evaluated using exact evaluation
+	\item Coding-related capabilities are evaluated using functional correctness
+	\item Efficiency can be evaluated by measuring runtime or memory usage
+	\item Non-coding domain capabilities are often evaluated with close-ended tasks (MCQs) $\to$ how many questions the model gets right
+	\item Classification metrics: F1 Score, precision, and recall
+	\item MCQs are best suited for evaluating knowledge and reasoning, but not ideal for evaluating generation capabilities
+\end{itemize}
+
+\subsubsection*{Generation Capability}
+\begin{itemize}
+	\item Fluency: Measures whether the text is grammatically correct and natural-sounding (became less important)
+	\item Coherence: How well-structured is the whole text (became less important)
+	\item Faithfulness (for translation task): How faithful is the generated translation to the original sentence?
+	\item Relevance: Does the summary focus on the most important aspects of the source document?
+	\item Factual consistency:
+	\begin{itemize}
+		\item Local factual consistency: Output is evaluated against a context and is considered factually consistent if it's supported by the given context
+		\item Global factual consistency: Output is evaluated against open knowledge
+	\end{itemize}
+	\item Most straightforward evaluation approach is AI as a judge:
+	\begin{itemize}
+		\item Self-verification: If a model generates multiple outputs that disagree with one anther, the original output is likely hallucinated
+		\item Knowledge-augmented verification
+	\end{itemize}
+	\item Textual entailment: Determine the relationship between two statements
+\end{itemize}
+
 \end{document}
