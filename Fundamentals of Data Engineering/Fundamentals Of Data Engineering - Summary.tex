@@ -72,4 +72,71 @@
 	\item Orchestration: Coordinating many jobs to run as quickly and efficiently as possible on a scheduled cadence (DAGs)
 \end{itemize}
 
+\subsection*{Designing Data Architecture}
+\subsubsection*{Architecture Concepts}
+\begin{itemize}
+	\item Domain: Real-world subject area, can contain multiple services
+	\item Service: Set of functionality whose goal is accomplish a task, each service has particular tasks
+	\item Scalability: Increase capacity of a system to improve performance
+	\item Elasticity: Ability of a scalable system to scale dynamically
+	\item Availability: Percentage of time an IT service or component is in an operable state
+	\item Reliability: System's probability of meeting defined standards in performing
+	\item Horizontal scaling: Add more machines to satisfy load and resource requirements where a leader node distributes tasks to worker nodes $\to$ Increase availability and reliability
+	\item Vertical scaling: Increase CPU, memory etc. $\to$ Cannot offer high availability and reliability
+	\item Architecture tiers:
+	\begin{itemize}
+		\item Single tier: Database and applications are tightly coupled, residing on a single server. Good for testing but not for production
+		\item Multi tier: Composed of multiple layers (data, applications, business logic etc.), that are bottom-up and hierarchical
+		\item Three tier: Consists of data, application logic, and presentation tiers
+		\item Monoliths: Consists of a single codebase running on a single machine that provides both the application logic and user interface
+		\item Microservices: Comprise separate, decentralized, and loosely coupled services where each service has a specific function and is decoupled from other services
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Types of Data Architecture}
+\begin{itemize}
+	\item Data Warehouse:
+	\begin{itemize}
+		\item Central data hub used for reporting and analysis
+		\item Data is typically highly formatted and structures for analytics use cases
+		\item Organizational DW: Organizes data associated with certain business team structure and processes
+		\item ETL:
+		\begin{itemize}
+			\item Extract: Pull data from source systems
+			\item Transform: Clean and standardize data, organize and impose business logic
+			\item Load: Push data into the DW target DB systems/data marts that serve the analytical needs
+		\end{itemize}
+		\item ELT:
+		\begin{itemize}
+			\item Raw data gets moved directly from production into staging area in the DW
+			\item Transformations are handled directly in the DW
+			\item Intention: Take advantage of massive computational power of cloud DWs
+			\item Data is processed in batches, and the transformed output is written into tables, views etc.
+		\end{itemize}
+	\end{itemize}
+	\item Cloud Data Warehouse: Data is housed in object storage, allowing virtually limitless storage
+	\item Data Mart: More refined subset of a warehouse designed to serve analytics and reporting, focused on single sub-organizations, departments etc. (each organization has its own DM)
+	\item Data Lake: Central location for (un-/semi-)structured data
+	\item Data Lakehouse: 
+	\begin{itemize}
+		\item Incorporates the controls, data management, and data structures found in a DW while housing data in object storage and supporting variety of querying and transformation engines
+		\item ACID (atomicity, consistency, isolation, durability) transactions
+	\end{itemize}
+	\item Data Mesh: Divide of data between operational and analytical data
+	\item Lambda Architecture:
+	\begin{itemize}
+		\item Systems operating independently of each other- batch, streaming, serving
+		\item Source system is immutable and append-only, sending data to two destinations for processing (stream and batch)
+		\item In-stream processing intends to serve data with the lowest possible latency
+		\item Batch layer processes data and transforms it into a system (e.g., DW)
+		\item Serving layer provides a combined view by aggregating query results from the two layers
+	\end{itemize}
+	\item Architecture for IoT:
+	\begin{itemize}
+		\item Distributed collection of devices with an internet connection
+		\item Devices: Collecting and transmitting data to a downstream destination
+		\item IoT gateway: Hub for connecting devices and securely routing devices to appropriate destination on the internet
+	\end{itemize}
+\end{itemize}
+
 \end{document}
