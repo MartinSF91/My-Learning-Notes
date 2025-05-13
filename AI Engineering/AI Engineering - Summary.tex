@@ -181,7 +181,6 @@
 \end{itemize}
 
 
-
 \subsubsection*{AI as Judge}
 \begin{itemize}
 	\item Using AI to evaluate AI
@@ -225,7 +224,7 @@
 	\end{itemize}
 \end{itemize}
 
-\subsubsection*{Domain-Specific Capability}
+\subsection*{Domain-Specific Capability}
 \begin{itemize}
 	\item Domain-specific capabilities are commonly evaluated using exact evaluation
 	\item Coding-related capabilities are evaluated using functional correctness
@@ -235,7 +234,7 @@
 	\item MCQs are best suited for evaluating knowledge and reasoning, but not ideal for evaluating generation capabilities
 \end{itemize}
 
-\subsubsection*{Generation Capability}
+\subsection*{Generation Capability}
 \begin{itemize}
 	\item Fluency: Measures whether the text is grammatically correct and natural-sounding (became less important)
 	\item Coherence: How well-structured is the whole text (became less important)
@@ -253,5 +252,128 @@
 	\end{itemize}
 	\item Textual entailment: Determine the relationship between two statements
 \end{itemize}
+
+
+\newpage
+\section*{Prompt Engineering}
+\begin{itemize}
+	\item Instruction given to a model to perform a task
+	\item Guides a model's behavior without changing the model's weights
+	\item Parts:
+	\begin{itemize}
+		\item Task description: What you want the model to do
+		\item Examples of how to do the task
+		\item Concrete task
+	\end{itemize}
+	\item Chain-of-Thought (CoT): Asking the model to think step by step, reducing hallucinations
+	\item Self-critique (self-eval): Asking the model to check its own outputs
+\end{itemize}
+
+\subsection*{In-Context Learning: Zero-Shot and Few-Shot}
+\begin{itemize}
+	\item In-Context Learning: 
+	\begin{itemize}
+		\item Teaching models what to do via prompts
+		\item Language models can learn behavior from examples in the prompt
+		\item Allows a model to incorporate new information continually to make decisions
+	\end{itemize}
+	\item Shot: Examples provided in the prompt
+	\item Few-Shot: Teaching a model to learn from examples in the prompt
+	\item Zero-Shot: No example is provided in the prompt
+\end{itemize}
+
+\subsection*{System Prompt and User Prompt}
+\begin{itemize}
+	\item System prompt: 
+	\begin{itemize}
+		\item Task description
+		\item Contain the instructions provided by the application developers
+	\end{itemize}
+	\item User prompt: 
+	\begin{itemize}
+		\item Task
+		\item Instructions provided by the user
+	\end{itemize}
+	\item System and user prompt are combined by the model into a single prompt, following a template
+\end{itemize}
+
+
+\subsection*{Defensive Prompt Engineering}
+\begin{itemize}
+	\item Main prompt attacks:
+	\begin{itemize}
+		\item Prompt extraction: Extracting the application's prompt, including system prompt
+		\item Jailbreaking and prompt injection
+		\item Information extraction: Getting the model to reveal its training data
+	\end{itemize}
+	\item Reverse prompt engineering: 
+	\begin{itemize}
+		\item Process of deducing the system prompt used for certain applications
+		\item Done by analyzing outputs or by tricking the model into repeating its entire prompt, including system prompt
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Jailbreaking and Prompt Injection}
+\begin{itemize}
+	\item Jailbreaking: Subvert a model's safety features
+	\item Prompt injection: Injection of malicious instructions are injected into the user prompt
+	\item Direct manual prompt hacking: Trick a model into dropping its safety filters (obfuscation, role playing)
+\end{itemize}
+
+\subsection*{Defenses Against Prompt Attacks}
+\begin{itemize}
+	\item Model-level defense: 
+	\begin{itemize}
+		\item Model is unable to differentiate between system instructions and malicious instructions
+		\item Levels of priority:
+		\begin{enumerate}
+			\item System prompt
+			\item User prompt
+			\item Model outputs
+			\item Tool outputs
+		\end{enumerate}
+		\item Not only recognize malicious prompts but also generate safe responses for borderline requests (invoke both safe and unsafe responses)
+	\end{itemize}
+	\item Prompt-level defense:
+	\begin{itemize}
+		\item Be explicit about what the model isn't supposed to do
+		\item Repeat system prompt twice, both before and after the user prompt
+	\end{itemize}
+	\item System-level defense:
+	\begin{itemize}
+		\item Isolation
+		\item Placing guardrails both to the inputs and outputs
+	\end{itemize}
+\end{itemize}
+
+
+\section*{RAG and Agents}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 \end{document}
