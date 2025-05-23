@@ -149,7 +149,97 @@
 		\item Evolve cloud financial management discipline and cultural practice that enables organizations to get maximum business value by helping engineering, finance, technology, and business teams to collaborate
 		\item Fully operationalize financial accountability and business value by applying DevOps practices of monitoring and dynamically adjusting systems
 	\end{itemize}
+	\item Serverless:
+	\begin{itemize}
+		\item Run applications without managing servers behind the scenes $\to$ ne need for backend infrastructure
+		\item Automated scaling from zero to extremely high usage rates
+		\item Billed as pay-as-you-go
+		\item Suffer from inherent overhead inefficiency
+		\item Critical to monitor and model
+		\item Don't make sense when usage and cost exceed ongoing of running and maintaining a server
+		\item Typically run on containers
+	\end{itemize}
 \end{itemize}
+
+\newpage
+\section*{Data Generation in Source Systems}
+\begin{itemize}
+	\item Online Analytical Processing System (OLTP):
+	\begin{itemize}
+		\item Built to run large analytics queries
+		\item Constantly listens for incoming queries $\to$ suitable for interactive analytics
+		\item Inefficient at handling lookups of individual records
+	\end{itemize}
+	\item Change Data Capture: Extracts each change event occurring in a DB
+	\item Logs: 
+	\begin{itemize}
+		\item Captures information about events that occur in systems
+		\item Track events and event metadata
+		\item Minimum: Who, what, when
+	\end{itemize}
+	\item CRUD: Represents the four basic operations of persistent storage
+	\item Insert-Only: 
+	\begin{itemize}
+		\item Retains history directly in a table
+		\item No updates of data but create new record with timestamp
+		\item Tables grow large, record lookups require extra overhead
+	\end{itemize}
+	\item Messages: 
+	\begin{itemize}
+		\item Raw data communicated across two or more systems
+		\item Typically sent through a message queue from a publisher to a consumer
+		\item Discrete and singular signals in an event-driven system
+	\end{itemize}
+	\item Stream:
+	\begin{itemize}
+		\item Append-only log of event records
+		\item Accumulated in an ordered sequence
+	\end{itemize}
+	\item Time:
+	\begin{itemize}
+		\item Event time: Indicates when an event is generated in a source system
+		\item Ingestion time: Indicates when an event is ingested from a source system into a message queue
+		\item Process and processing time
+	\end{itemize}
+	\item REST: Representational state transfer
+	\item Webhook: Event-based data-transmission pattern
+	\item Message queues: 
+	\begin{itemize}
+		\item Mechanism to asynchronously send data between discrete systems using a publish and subscribe model
+		\item Allows applications and systems to be decoupled from each other
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Application Databases (OLTP)}
+\begin{itemize}
+	\item OLTP: Online Transaction Processing
+	\item Store the state of an application, reads and writes individual data records at a high rate
+	\item Support low latency and work well when lots of users might be interacting with the application simultaneously
+	\item Less suited for analytics, where a single query must scan a vast amount of data
+	\item ACID transactions:
+	\begin{itemize}
+		\item Atomic: Several changes committed as a unit
+		\item Consistency: Any DB read will return the last written version of the retrieved item
+		\item Isolation: DB will be consistent with sequential execution of updates in order they were submitted
+		\item Durability: Committed data will never be lost
+	\end{itemize}
+\end{itemize}
+
+
+\subsubsection*{Relational DBs}
+\begin{itemize}
+	\item Data is stored in a table of relations (rows)
+	\item Each relation contains multiple fields (columns)
+	\item Each relation in the table has the same schema
+	\item Tables are typically indexed by a PK
+	\item FK: Field with values connected with the values of PKs in other tables
+	\item ACID compliant
+	\item Ideal for storing rapidly changing application states
+\end{itemize}
+
+
+
+
 
 
 
