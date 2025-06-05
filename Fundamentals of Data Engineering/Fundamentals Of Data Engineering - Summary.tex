@@ -238,6 +238,118 @@
 \end{itemize}
 
 
+\section*{Storage}
+\begin{itemize}
+	\item Underlies Ingestion, Transformation, and Serving
+	\item Storage abstractions: Data Lake, Lakehouse, Platform, Cloud Data Warehouse
+	\item Storage systems: HDFS, RDBMS, Cache/memory-based, Object, and Streaming storage
+	\item Indexes: 
+	\begin{itemize}
+		\item Provide a map of the table for particular fields and allow extremely fast lookup of individual records
+		\item Used for primary keys
+	\end{itemize}
+	\item Columnar serialization: Allows a DB to scan only the columns required for a particular query
+\end{itemize}
+
+\subsection*{Storage Abstractions}
+\subsubsection*{Data Warehouse}
+\begin{itemize}
+	\item Standard OLAP data architecture for data centralization
+	\item CDWs are often used to organize data into a Data Lake
+	\item CDWs cannot handle truly unstructured data unlike a true Data Lake
+	\item Can be coupled with object storage to provide a complete data Lake solution
+\end{itemize}
+
+\subsubsection*{Data Lake}
+\begin{itemize}
+	\item Massive store for retaining raw, unprocessed form
+	\item Separation of compute and storage
+\end{itemize}
+
+\subsubsection*{Data Lakehouse}
+\begin{itemize}
+	\item Combines aspects of DW and DL
+	\item Stores data in object storage
+	\item Robust table and schema support
+	\item Supports history and rollbacks
+	\item Metadata file-management layer deployed with data management and transformation tools
+	\item High interoperability
+	\item Various tools can connect to the metadata layer and read data directly from object storage
+\end{itemize}
+
+
+\subsection*{Trends}
+\subsubsection*{Data Catalog}
+\begin{itemize}
+	\item Centralized metadata store for all data across an organization
+	\item Works across operational and analytics data sources, integrate lineage and presentation of data relationships
+	\item Provide a central place where people can view their data, queries, and data storage
+\end{itemize}
+
+\subsubsection*{Schema}
+\begin{itemize}
+	\item Instructions how to read the data
+	\item Schema on write:
+	\begin{itemize}
+		\item Traditional DW pattern where a table has an integrated schema 
+		\item Any writes to the table must conform
+		\item DL must integrate a schema metastore
+	\end{itemize}
+	\item Schema on read:
+	\begin{itemize}
+		\item Schema is dynamically created when data is written, and a reader must determine the schema when reading the table
+		\item Advantage: Enforces data standards and emphasizes flexibility
+	\end{itemize}
+\end{itemize}
+
+
+\subsection*{Data Storage Lifecycle and Data Retention}
+\begin{itemize}
+	\item Hot data:
+	\begin{itemize}
+		\item Instant or frequent access requirements
+		\item Fast access and reads
+		\item Most expensive form of storage, but retrieval is inexpensive
+		\item Query results cache: Persisting query results in cache for much faster query response
+	\end{itemize}
+	\item Warm data: Storage is cheaper than hot data, with slightly more expensive retrieval costs
+	\item Cold data:
+	\begin{itemize}
+		\item Infrequently accessed data, e.g., long-term archival
+		\item Cheap storing costs, retrieving data is quite expensive
+	\end{itemize}
+	\item Data retention: What data is needed and how long should it be kept
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
