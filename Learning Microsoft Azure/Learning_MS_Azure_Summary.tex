@@ -1,0 +1,182 @@
+
+\documentclass[11pt]{scrartcl}
+\usepackage{graphicx}
+\usepackage{amsmath, amssymb, textcomp}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{ucs}
+\usepackage[T1]{fontenc}
+\usepackage{subcaption} 		% Subfigures
+\usepackage{hyperref}
+\usepackage{fullpage}	
+\usepackage{color}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep, topsep=1pt}
+\usepackage[font=footnotesize]{caption}
+\usepackage{draftwatermark}
+\SetWatermarkText{Martin Fané}
+\SetWatermarkScale{3}
+\SetWatermarkColor[gray]{0.99}
+\usepackage[numindex,nottoc,section]{} 
+
+
+\begin{document}
+\section*{Cloud Fundamentals}
+\begin{itemize}
+	\item Infraastructure as a Service:
+	\begin{itemize}
+		\item Computing deployment category in which the cloud provider delivers infrastructure through the cloud
+		\item Delivery of IT infrastructure resources like web servers, DB servers, compute storage, networking, computing data centers as service
+		\item Buy pizza at the store and bake it at home
+	\end{itemize}
+	\item Platform as a Service:
+	\begin{itemize}
+		\item Cloud model where users can create, build, and deploy applications on the cloud without worrying about IT infrastructure behind it
+		\item Provides computing services, development, and monitoring tools for application development
+		\item Provider takes care of physical infrastructures, data centers, hardware, OS
+		\item User only needs to write and deploy application code on the platform
+		\item Pizza delivery
+	\end{itemize}
+	\item Software as a Service:
+	\begin{itemize}
+		\item Software-on-demand cloud model where cloud provider give access to a fully developed application
+		\item Enables users to access and use applications online without installation
+		\item Accessible through web browser or servers
+		\item Pay for the service on a subscription basis
+		\item Order pizza at a restaurant
+	\end{itemize}
+	\item Containers as a Service:
+	\begin{itemize}
+		\item Deploy applications in  containers (containerization)
+		\item Container: runtime that contains essential computing resources needed to run an application, including the core part of the host OS (kernel) and its shared resources like storage across a host
+	\end{itemize}
+	\item Serverless:
+	\begin{itemize}
+		\item Backend services are provided by a cloud service provider
+		\item Third-party provider manages the infrastructure and automatically provisions and scales resources as needed
+		\item Provider handles server infrastructure, OS and other low-level components $\to$ no need to manage underlying infrastructure
+	\end{itemize}
+\end{itemize}
+
+
+\section*{MS Azure Fundamentals}
+\subsection*{Services}
+\begin{itemize}
+	\item Compute Services:
+	\begin{itemize}
+		\item Provide quickly available and on-demand resources like OS, networking, disks, processors, and memory
+		\item Enables to build web and mobile applications, deploy and manage VMs, build apps in containers in the cloud, create batch jobs, etc.
+	\end{itemize}
+	\item Core Azure Storage Services:
+	\begin{itemize}
+		\item AZ Blobs: Store scalable binary data, text, or Data Lake Storage Gen2 big data analytics
+		\item AZ Files: Fully manageable file shares for deployments on-premise or cloud. Accessible anywhere through Server Message Block (SMB) protocol
+		\item AZ Queues: Collect large messages that are accessed via authenticated HTTP calls
+		\item AZ Managed Disks: Store block-level volumes for AZ vmS
+	\end{itemize}
+	\item Core Azure DB Services:
+	\begin{itemize}
+		\item AZ SQL DB: Cloud-hosted SQL databases that are fully managed, intelligent, and secure
+		\item AZ Cosmos DB: Create and migrate NoSQL workloads to the cloud like Cassandra, MongoDB, and
+		other NoSQL databases
+		\item AZ Cache for Redis DB: Build fast and scalable applications with Redis in-memory data store
+		\item AZ DB for PostgreSQL, MySQL, and MariaDB: Create fully managed and scalable databases for PostgresSQL, MySQL, and MariaDB
+		\item AZ SQL Edge: Build IoT edge-optimized SQL database engine with built-in AI
+	\end{itemize}
+\end{itemize}
+
+\subsection*{Core Architecture and Resource Management Concepts}
+\begin{itemize}
+	\item Management groups:
+	\begin{itemize}
+		\item Top level of the core structure
+		\item Administrators manage everything about user access, compliance, and policies for subscriptions
+		\item Subscriptions within a management group automatically inherit settings, conditions, and restrictions added in the group
+		\item AZ RBAC for all resources and role definitions is supported in the root management group
+	\end{itemize}
+	\item Azure subscriptions:
+	\begin{itemize}
+		\item Are like a big container for all user accounts and resources they have accessed or used within the subscription
+		\item Every subscription has a limit of resources that a certain user can create and use
+		\item Use subscriptions to control monthly bill and resource costs
+	\end{itemize}
+	\item Resource groups:
+	\begin{itemize}
+		\item Group services or resources using resource groups
+		\item Acts as a logical container where resources like servers, web apps, DBs, storage, and monitoring are deployed, managed, and stored
+	\end{itemize}
+	\item Resources:
+	\begin{itemize}
+		\item DBs, servers, VMs, or web apps
+		\item All resources or services must be added to a resource group, which acts like a logical container
+	\end{itemize}
+	\item Resource Manager:
+	\begin{itemize}
+		\item Management and deployment service that provides users the capability to add, edit, and delete resources in AZ
+		\item By using ARM, an organization can manage user access control and organize resources securely even after deployment
+		\item ARM templates are commonly used to automate deployments and implement infrastructure as Code
+		\item IaC creates a great advantage, nd enables deployment automation of the infrastructure in the cloud
+		\item Using IaC, you can automate deployments by generating templates for the same environment every time
+	\end{itemize}
+\end{itemize}
+	
+	
+\subsection*{User Identities, Roles, and Active Directories}
+\begin{itemize}
+	\item Role-Based Access Control:
+	\begin{itemize}
+		\item Helps in authorization and user access management of resources 
+		\item Management of identity using RBAC helps in controlling what users can do and cannot do
+	\end{itemize}
+	\item Roles:
+	\begin{itemize}
+		\item Security principal:
+		\begin{itemize}
+			\item Object that represents a security identity that can be authenticated and authorized to access resources
+			\item Used to grant ar deny resource permissions
+			\item Can be authenticated as user, security group, or process 
+			\item When assigning roles to a security principal, you're granting or denying permissions to access specific resources in AZ
+		\end{itemize}
+		\item Role definition:
+		\begin{itemize}
+			\item Sets permissions for users or security principals to utilize resources
+			\item Each role definition has a set of access controls, or actions, which helps determine which resource activities are permissable
+		\end{itemize}
+		\item Scope:
+		\begin{itemize}
+			\item Determines the level at which the role assignment applies
+			\item Defines the set of resources the role assignment applies to and can be set at various levels in resource hierarchy (management group, subscription, resource group, and individual resource level)
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+\end{document}
