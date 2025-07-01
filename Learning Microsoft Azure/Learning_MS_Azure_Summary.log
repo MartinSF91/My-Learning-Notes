@@ -1,13 +1,9 @@
-<<<<<<< HEAD
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.3.6)  28 MAY 2025 14:44
-=======
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.15)  5 JUN 2025 09:10
->>>>>>> 0d7174f1ac1f365d28a404fea6121c5ea24df675
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2025.2.15)  10 JUN 2025 16:13
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**"Fundamentals Of Data Engineering - Summary.tex"
-(./Fundamentals Of Data Engineering - Summary.tex
+**Learning_MS_Azure_Summary.tex
+(./Learning_MS_Azure_Summary.tex
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
 (c:/texlive/2024/texmf-dist/tex/latex/koma-script/scrartcl.cls
@@ -503,8 +499,8 @@ File: l3backend-pdftex.def 2024-05-08 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count304
 \l__pdf_internal_box=\box57
 )
-(./Fundamentals Of Data Engineering - Summary.aux)
-\openout1 = `"Fundamentals Of Data Engineering - Summary.aux"'.
+(./Learning_MS_Azure_Summary.aux)
+\openout1 = `Learning_MS_Azure_Summary.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
 LaTeX Font Info:    ... okay on input line 23.
@@ -564,10 +560,9 @@ Package caption Info: hyperref package is loaded.
 Package caption Info: End \AtBeginDocument code.
 Package hyperref Info: Link coloring OFF on input line 23.
 
-(./Fundamentals Of Data Engineering - Summary.out)
-(./Fundamentals Of Data Engineering - Summary.out)
+(./Learning_MS_Azure_Summary.out) (./Learning_MS_Azure_Summary.out)
 \@outlinefile=\write3
-\openout3 = `"Fundamentals Of Data Engineering - Summary.out"'.
+\openout3 = `Learning_MS_Azure_Summary.out'.
 
 Class scrartcl Info: loading recommended package `bookmark'.
 (scrartcl)           Using `bookmark' together with `hyperref' is recommended,
@@ -586,35 +581,31 @@ File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO
 )
 \BKM@id=\count311
 ))
-
-
-LaTeX Font Warning: Font shape `T1/cmr/m/n' in size <149.37698> not available
-(Font)              size <35.83> substituted on input line 79.
-
-[1{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/202
-4/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
-
-{c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 84.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 57.
 
 
 (c:/texlive/2024/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 84.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 57.
 
 
 (c:/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
+
+LaTeX Font Warning: Font shape `T1/cmr/m/n' in size <149.37698> not available
+(Font)              size <35.83> substituted on input line 74.
+
+[1{c:/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/texlive/202
+4/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}
+
+{c:/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
+
 [2]
 
-[3]
-
-[4]
-
-[5] (./Fundamentals Of Data Engineering - Summary.aux)
+[3] (./Learning_MS_Azure_Summary.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
@@ -624,30 +615,28 @@ L3 programming layer <2025-01-18>
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 113.54698pt have occurred.
 
-Package rerunfilecheck Info: File `"Fundamentals Of Data Engineering - Summary"
-.out' has not changed.
+Package rerunfilecheck Info: File `Learning_MS_Azure_Summary.out' has not chang
+ed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 16760 strings out of 473201
- 294362 string characters out of 5720299
- 855420 words of memory out of 5000000
- 39785 multiletter control sequences out of 15000+600000
+ 16740 strings out of 473201
+ 293415 string characters out of 5720299
+ 853382 words of memory out of 5000000
+ 39773 multiletter control sequences out of 15000+600000
  569238 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 108i,12n,107p,10960b,669s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,12n,107p,10941b,673s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/tex
 live/2024/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb><c:/texlive/2024/
 texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c:/texlive/2024/texmf-dist
 /fonts/type1/public/cm-super/sfrm3583.pfb><c:/texlive/2024/texmf-dist/fonts/typ
-e1/public/cm-super/sfsx1095.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/
-cm-super/sfsx1200.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/cm-super/s
-fsx1440.pfb>
-Output written on "Fundamentals Of Data Engineering - Summary.pdf" (5 pages, 11
-5342 bytes).
+e1/public/cm-super/sfsx1200.pfb><c:/texlive/2024/texmf-dist/fonts/type1/public/
+cm-super/sfsx1440.pfb>
+Output written on Learning_MS_Azure_Summary.pdf (3 pages, 90769 bytes).
 PDF statistics:
- 83 PDF objects out of 1000 (max. 8388607)
- 60 compressed objects within 1 object stream
- 17 named destinations out of 1000 (max. 500000)
+ 63 PDF objects out of 1000 (max. 8388607)
+ 44 compressed objects within 1 object stream
+ 9 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

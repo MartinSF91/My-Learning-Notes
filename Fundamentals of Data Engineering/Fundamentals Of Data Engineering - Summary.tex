@@ -149,7 +149,209 @@
 		\item Evolve cloud financial management discipline and cultural practice that enables organizations to get maximum business value by helping engineering, finance, technology, and business teams to collaborate
 		\item Fully operationalize financial accountability and business value by applying DevOps practices of monitoring and dynamically adjusting systems
 	\end{itemize}
+	\item Serverless:
+	\begin{itemize}
+		\item Run applications without managing servers behind the scenes $\to$ ne need for backend infrastructure
+		\item Automated scaling from zero to extremely high usage rates
+		\item Billed as pay-as-you-go
+		\item Suffer from inherent overhead inefficiency
+		\item Critical to monitor and model
+		\item Don't make sense when usage and cost exceed ongoing of running and maintaining a server
+		\item Typically run on containers
+	\end{itemize}
 \end{itemize}
+
+\newpage
+\section*{Data Generation in Source Systems}
+\begin{itemize}
+	\item Online Analytical Processing System (OLTP):
+	\begin{itemize}
+		\item Built to run large analytics queries
+		\item Constantly listens for incoming queries $\to$ suitable for interactive analytics
+		\item Inefficient at handling lookups of individual records
+	\end{itemize}
+	\item Change Data Capture: Extracts each change event occurring in a DB
+	\item Logs: 
+	\begin{itemize}
+		\item Captures information about events that occur in systems
+		\item Track events and event metadata
+		\item Minimum: Who, what, when
+	\end{itemize}
+	\item CRUD: Represents the four basic operations of persistent storage
+	\item Insert-Only: 
+	\begin{itemize}
+		\item Retains history directly in a table
+		\item No updates of data but create new record with timestamp
+		\item Tables grow large, record lookups require extra overhead
+	\end{itemize}
+	\item Messages: 
+	\begin{itemize}
+		\item Raw data communicated across two or more systems
+		\item Typically sent through a message queue from a publisher to a consumer
+		\item Discrete and singular signals in an event-driven system
+	\end{itemize}
+	\item Stream:
+	\begin{itemize}
+		\item Append-only log of event records
+		\item Accumulated in an ordered sequence
+	\end{itemize}
+	\item Time:
+	\begin{itemize}
+		\item Event time: Indicates when an event is generated in a source system
+		\item Ingestion time: Indicates when an event is ingested from a source system into a message queue
+		\item Process and processing time
+	\end{itemize}
+	\item REST: Representational state transfer
+	\item Webhook: Event-based data-transmission pattern
+	\item Message queues: 
+	\begin{itemize}
+		\item Mechanism to asynchronously send data between discrete systems using a publish and subscribe model
+		\item Allows applications and systems to be decoupled from each other
+	\end{itemize}
+\end{itemize}
+
+\subsubsection*{Application Databases (OLTP)}
+\begin{itemize}
+	\item OLTP: Online Transaction Processing
+	\item Store the state of an application, reads and writes individual data records at a high rate
+	\item Support low latency and work well when lots of users might be interacting with the application simultaneously
+	\item Less suited for analytics, where a single query must scan a vast amount of data
+	\item ACID transactions:
+	\begin{itemize}
+		\item Atomic: Several changes committed as a unit
+		\item Consistency: Any DB read will return the last written version of the retrieved item
+		\item Isolation: DB will be consistent with sequential execution of updates in order they were submitted
+		\item Durability: Committed data will never be lost
+	\end{itemize}
+\end{itemize}
+
+
+\subsubsection*{Relational DBs}
+\begin{itemize}
+	\item Data is stored in a table of relations (rows)
+	\item Each relation contains multiple fields (columns)
+	\item Each relation in the table has the same schema
+	\item Tables are typically indexed by a PK
+	\item FK: Field with values connected with the values of PKs in other tables
+	\item ACID compliant
+	\item Ideal for storing rapidly changing application states
+\end{itemize}
+
+
+\section*{Storage}
+\begin{itemize}
+	\item Underlies Ingestion, Transformation, and Serving
+	\item Storage abstractions: Data Lake, Lakehouse, Platform, Cloud Data Warehouse
+	\item Storage systems: HDFS, RDBMS, Cache/memory-based, Object, and Streaming storage
+	\item Indexes: 
+	\begin{itemize}
+		\item Provide a map of the table for particular fields and allow extremely fast lookup of individual records
+		\item Used for primary keys
+	\end{itemize}
+	\item Columnar serialization: Allows a DB to scan only the columns required for a particular query
+\end{itemize}
+
+\subsection*{Storage Abstractions}
+\subsubsection*{Data Warehouse}
+\begin{itemize}
+	\item Standard OLAP data architecture for data centralization
+	\item CDWs are often used to organize data into a Data Lake
+	\item CDWs cannot handle truly unstructured data unlike a true Data Lake
+	\item Can be coupled with object storage to provide a complete data Lake solution
+\end{itemize}
+
+\subsubsection*{Data Lake}
+\begin{itemize}
+	\item Massive store for retaining raw, unprocessed form
+	\item Separation of compute and storage
+\end{itemize}
+
+\subsubsection*{Data Lakehouse}
+\begin{itemize}
+	\item Combines aspects of DW and DL
+	\item Stores data in object storage
+	\item Robust table and schema support
+	\item Supports history and rollbacks
+	\item Metadata file-management layer deployed with data management and transformation tools
+	\item High interoperability
+	\item Various tools can connect to the metadata layer and read data directly from object storage
+\end{itemize}
+
+
+\subsection*{Trends}
+\subsubsection*{Data Catalog}
+\begin{itemize}
+	\item Centralized metadata store for all data across an organization
+	\item Works across operational and analytics data sources, integrate lineage and presentation of data relationships
+	\item Provide a central place where people can view their data, queries, and data storage
+\end{itemize}
+
+\subsubsection*{Schema}
+\begin{itemize}
+	\item Instructions how to read the data
+	\item Schema on write:
+	\begin{itemize}
+		\item Traditional DW pattern where a table has an integrated schema 
+		\item Any writes to the table must conform
+		\item DL must integrate a schema metastore
+	\end{itemize}
+	\item Schema on read:
+	\begin{itemize}
+		\item Schema is dynamically created when data is written, and a reader must determine the schema when reading the table
+		\item Advantage: Enforces data standards and emphasizes flexibility
+	\end{itemize}
+\end{itemize}
+
+
+\subsection*{Data Storage Lifecycle and Data Retention}
+\begin{itemize}
+	\item Hot data:
+	\begin{itemize}
+		\item Instant or frequent access requirements
+		\item Fast access and reads
+		\item Most expensive form of storage, but retrieval is inexpensive
+		\item Query results cache: Persisting query results in cache for much faster query response
+	\end{itemize}
+	\item Warm data: Storage is cheaper than hot data, with slightly more expensive retrieval costs
+	\item Cold data:
+	\begin{itemize}
+		\item Infrequently accessed data, e.g., long-term archival
+		\item Cheap storing costs, retrieving data is quite expensive
+	\end{itemize}
+	\item Data retention: What data is needed and how long should it be kept
+\end{itemize}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
