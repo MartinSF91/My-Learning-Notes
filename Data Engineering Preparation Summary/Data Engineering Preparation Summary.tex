@@ -21,306 +21,184 @@
 
 
 \begin{document}
-\subsection*{Data Engineering Lifecycle}
-\begin{itemize}
-	\item Schema: Defines the hierarchical organization of data
-	\item Schemaless: Application defines the schema as data is written
-	\item Fixed schema: Enforced in the DB to which application writes must conform
-	\item Ingestion:
-	\begin{itemize}
-		\item Push: Source system writes data out to a target
-		\item Pull: Data is retrieved from a source system
-	\end{itemize}
-	\item Featurization: Extract and enhance data features useful for training ML models
-	\item BI: 
-	\begin{itemize}
-		\item Describe a business's past and current state
-		\item Data is stored in a clean but fairly raw form with minimal postprocessing business logic
-	\end{itemize}
-	\item Operational Analytics: 
-	\begin{itemize}
-		\item Fine-grained details of operations, e.g., live view of inventory
-		\item Focused on present and doesn't concern historical trends
-	\end{itemize}
-	\item Security: Principle of least priviledge
-	\item Data Management: Encompasses the set of best practices DE will use to accomplish the task of managing the data lifecycle technically and strategically 
-	\item Data Governance: Ensure quality, integrity, security, and usability of the data collected by an organization
-	\item Metadata:
-	\begin{itemize}
-		\item Business: Non-technical questions about who, what, where, and how and provides a DE with the right context and definitions to properly use the data
-		\item Technical: Describes the data created and used by systems across the DE lifecycle
-		\item Data Lineage: Tracks the origin and changes to data
-		\item Schema: Describes structure of data stored in a system
-		\item Operational: Used to determine whether a process succeeded or failed and the data involved in the process
-	\end{itemize}
-	\item Data Accountability: Assigning an individual to govern a portition of data
-	\item Data Quality: 
-	\begin{itemize}
-		\item Quality tests, ensuring data conformance to schema expectations, data completions, and precision
-		\item Accuracy: Is the data factuall correct? Duplicated values? Are the numeric values accurate?
-		\item Completeness: Are the records complete? Do all required fields contain valid values? 
-	\end{itemize}
-	\item Master Data: Business entities (employees, customers etc.)
-	\item Master Data Management: Practice of building consistent entity definitions known as golden records
-	\item Data Modeling and Design: Process for converting data into usable form
-	\item Data Lineage:
-	\begin{itemize}
-		\item Provides a trail of data's evolution as it moves through various systems and workflows
-		\item Tracks both the systems that process the data and the upstream data it depends on
-	\end{itemize}
-	\item Data Integration: Process of integrating data across tools and processes. Happens through general-purpose APIs rather than DB connections
-	\item Orchestration: Coordinating many jobs to run as quickly and efficiently as possible on a scheduled cadence (DAGs)
-\end{itemize}
-
-\subsection*{Designing Data Architecture}
-\subsubsection*{Architecture Concepts}
-\begin{itemize}
-	\item Domain: Real-world subject area, can contain multiple services
-	\item Service: Set of functionality whose goal is accomplish a task, each service has particular tasks
-	\item Scalability: Increase capacity of a system to improve performance
-	\item Elasticity: Ability of a scalable system to scale dynamically
-	\item Availability: Percentage of time an IT service or component is in an operable state
-	\item Reliability: System's probability of meeting defined standards in performing
-	\item Horizontal scaling: Add more machines to satisfy load and resource requirements where a leader node distributes tasks to worker nodes $\to$ Increase availability and reliability
-	\item Vertical scaling: Increase CPU, memory etc. $\to$ Cannot offer high availability and reliability
-	\item Architecture tiers:
-	\begin{itemize}
-		\item Single tier: Database and applications are tightly coupled, residing on a single server. Good for testing but not for production
-		\item Multi tier: Composed of multiple layers (data, applications, business logic etc.), that are bottom-up and hierarchical
-		\item Three tier: Consists of data, application logic, and presentation tiers
-		\item Monoliths: Consists of a single codebase running on a single machine that provides both the application logic and user interface
-		\item Microservices: Comprise separate, decentralized, and loosely coupled services where each service has a specific function and is decoupled from other services
-	\end{itemize}
-\end{itemize}
-
-\subsubsection*{Types of Data Architecture}
-\begin{itemize}
-	\item Data Warehouse:
-	\begin{itemize}
-		\item Central data hub used for reporting and analysis
-		\item Data is typically highly formatted and structures for analytics use cases
-		\item Organizational DW: Organizes data associated with certain business team structure and processes
-		\item ETL:
-		\begin{itemize}
-			\item Extract: Pull data from source systems
-			\item Transform: Clean and standardize data, organize and impose business logic
-			\item Load: Push data into the DW target DB systems/data marts that serve the analytical needs
-		\end{itemize}
-		\item ELT:
-		\begin{itemize}
-			\item Raw data gets moved directly from production into staging area in the DW
-			\item Transformations are handled directly in the DW
-			\item Intention: Take advantage of massive computational power of cloud DWs
-			\item Data is processed in batches, and the transformed output is written into tables, views etc.
-		\end{itemize}
-	\end{itemize}
-	\item Cloud Data Warehouse: Data is housed in object storage, allowing virtually limitless storage
-	\item Data Mart: More refined subset of a warehouse designed to serve analytics and reporting, focused on single sub-organizations, departments etc. (each organization has its own DM)
-	\item Data Lake: Central location for (un-/semi-)structured data
-	\item Data Lakehouse: 
-	\begin{itemize}
-		\item Incorporates the controls, data management, and data structures found in a DW while housing data in object storage and supporting variety of querying and transformation engines
-		\item ACID (atomicity, consistency, isolation, durability) transactions
-	\end{itemize}
-	\item Data Mesh: Divide of data between operational and analytical data
-	\item Lambda Architecture:
-	\begin{itemize}
-		\item Systems operating independently of each other- batch, streaming, serving
-		\item Source system is immutable and append-only, sending data to two destinations for processing (stream and batch)
-		\item In-stream processing intends to serve data with the lowest possible latency
-		\item Batch layer processes data and transforms it into a system (e.g., DW)
-		\item Serving layer provides a combined view by aggregating query results from the two layers
-	\end{itemize}
-	\item Architecture for IoT:
-	\begin{itemize}
-		\item Distributed collection of devices with an internet connection
-		\item Devices: Collecting and transmitting data to a downstream destination
-		\item IoT gateway: Hub for connecting devices and securely routing devices to appropriate destination on the internet
-	\end{itemize}
-\end{itemize}
-
-
-
-
-\section*{Technologies Across the Data Engineering Lifecycle}
-\begin{itemize}
-	\item FinOps:
-	\begin{itemize}
-		\item Evolve cloud financial management discipline and cultural practice that enables organizations to get maximum business value by helping engineering, finance, technology, and business teams to collaborate
-		\item Fully operationalize financial accountability and business value by applying DevOps practices of monitoring and dynamically adjusting systems
-	\end{itemize}
-	\item Serverless:
-	\begin{itemize}
-		\item Run applications without managing servers behind the scenes $\to$ ne need for backend infrastructure
-		\item Automated scaling from zero to extremely high usage rates
-		\item Billed as pay-as-you-go
-		\item Suffer from inherent overhead inefficiency
-		\item Critical to monitor and model
-		\item Don't make sense when usage and cost exceed ongoing of running and maintaining a server
-		\item Typically run on containers
-	\end{itemize}
-\end{itemize}
-
-\newpage
-\section*{Data Generation in Source Systems}
-\begin{itemize}
-	\item Online Analytical Processing System (OLTP):
-	\begin{itemize}
-		\item Built to run large analytics queries
-		\item Constantly listens for incoming queries $\to$ suitable for interactive analytics
-		\item Inefficient at handling lookups of individual records
-	\end{itemize}
-	\item Change Data Capture: Extracts each change event occurring in a DB
-	\item Logs: 
-	\begin{itemize}
-		\item Captures information about events that occur in systems
-		\item Track events and event metadata
-		\item Minimum: Who, what, when
-	\end{itemize}
-	\item CRUD: Represents the four basic operations of persistent storage
-	\item Insert-Only: 
-	\begin{itemize}
-		\item Retains history directly in a table
-		\item No updates of data but create new record with timestamp
-		\item Tables grow large, record lookups require extra overhead
-	\end{itemize}
-	\item Messages: 
-	\begin{itemize}
-		\item Raw data communicated across two or more systems
-		\item Typically sent through a message queue from a publisher to a consumer
-		\item Discrete and singular signals in an event-driven system
-	\end{itemize}
-	\item Stream:
-	\begin{itemize}
-		\item Append-only log of event records
-		\item Accumulated in an ordered sequence
-	\end{itemize}
-	\item Time:
-	\begin{itemize}
-		\item Event time: Indicates when an event is generated in a source system
-		\item Ingestion time: Indicates when an event is ingested from a source system into a message queue
-		\item Process and processing time
-	\end{itemize}
-	\item REST: Representational state transfer
-	\item Webhook: Event-based data-transmission pattern
-	\item Message queues: 
-	\begin{itemize}
-		\item Mechanism to asynchronously send data between discrete systems using a publish and subscribe model
-		\item Allows applications and systems to be decoupled from each other
-	\end{itemize}
-\end{itemize}
-
-\subsubsection*{Application Databases (OLTP)}
-\begin{itemize}
-	\item OLTP: Online Transaction Processing
-	\item Store the state of an application, reads and writes individual data records at a high rate
-	\item Support low latency and work well when lots of users might be interacting with the application simultaneously
-	\item Less suited for analytics, where a single query must scan a vast amount of data
-	\item ACID transactions:
-	\begin{itemize}
-		\item Atomic: Several changes committed as a unit
-		\item Consistency: Any DB read will return the last written version of the retrieved item
-		\item Isolation: DB will be consistent with sequential execution of updates in order they were submitted
-		\item Durability: Committed data will never be lost
-	\end{itemize}
-\end{itemize}
-
-
-\subsubsection*{Relational DBs}
-\begin{itemize}
-	\item Data is stored in a table of relations (rows)
-	\item Each relation contains multiple fields (columns)
-	\item Each relation in the table has the same schema
-	\item Tables are typically indexed by a PK
-	\item FK: Field with values connected with the values of PKs in other tables
-	\item ACID compliant
-	\item Ideal for storing rapidly changing application states
-\end{itemize}
-
-
-\section*{Storage}
-\begin{itemize}
-	\item Underlies Ingestion, Transformation, and Serving
-	\item Storage abstractions: Data Lake, Lakehouse, Platform, Cloud Data Warehouse
-	\item Storage systems: HDFS, RDBMS, Cache/memory-based, Object, and Streaming storage
-	\item Indexes: 
-	\begin{itemize}
-		\item Provide a map of the table for particular fields and allow extremely fast lookup of individual records
-		\item Used for primary keys
-	\end{itemize}
-	\item Columnar serialization: Allows a DB to scan only the columns required for a particular query
-\end{itemize}
-
-\subsection*{Storage Abstractions}
-\subsubsection*{Data Warehouse}
-\begin{itemize}
-	\item Standard OLAP data architecture for data centralization
-	\item CDWs are often used to organize data into a Data Lake
-	\item CDWs cannot handle truly unstructured data unlike a true Data Lake
-	\item Can be coupled with object storage to provide a complete data Lake solution
-\end{itemize}
-
 \subsubsection*{Data Lake}
 \begin{itemize}
-	\item Massive store for retaining raw, unprocessed form
-	\item Separation of compute and storage
+	\item Ein Data Lake ist ein zentrales Repository, das strukturierte, semi-strukturierte und unstrukturierte Rohdaten in großem Umfang speichert
+	\item Eignet sich besonders für Big-Data-Analysen und Machine Learning, erfordert aber zusätzliche Verarbeitung zur Datennutzung
+\end{itemize}
+
+\subsubsection*{Data Warehouse}
+\begin{itemize}
+	\item Ein Data Warehouse ist ein zentrales, strukturiertes System zur langfristigen Speicherung und Analyse großer Datenmengen aus verschiedenen Quellen
+	\item Optimiert für komplexe Abfragen und Business-Intelligence-Anwendungen
+\end{itemize}
+
+\subsubsection*{Cloud Data Warehouse}
+\begin{itemize}
+	\item Ein Cloud Data Warehouse ist ein Data Warehouse, das in der Cloud gehostet wird und dadurch flexibel skalierbar und wartungsarm ist. Beispiele sind Snowflake, Google BigQuery oder Amazon Redshift
 \end{itemize}
 
 \subsubsection*{Data Lakehouse}
 \begin{itemize}
-	\item Combines aspects of DW and DL
-	\item Stores data in object storage
-	\item Robust table and schema support
-	\item Supports history and rollbacks
-	\item Metadata file-management layer deployed with data management and transformation tools
-	\item High interoperability
-	\item Various tools can connect to the metadata layer and read data directly from object storage
-\end{itemize}
+	\item Datenarchitektur, die die Flexibilität und Skalierbarkeit eines Data Lakes mit den strukturierten Datenmanagement- und Analysefunktionen eines Data Warehouses kombiniert
+	\item Ermöglicht sowohl explorative Datenanalyse als auch strukturierte BI-Abfragen auf einer gemeinsamen Plattform
+	\item ACID Transaktionen:
+	\begin{itemize}
+		\item Atomicity: Transaktion wird entweder vollständig ausgeführt oder gar nicht – es gibt keine halbfertigen Zustände
+		\item Consistency: Transaktion überführt die Datenbank von einem konsistenten Zustand in einen anderen, wobei alle definierten Regeln (z.B. Integritätsbedingungen) eingehalten werden
+		\item Isolation: Gleichzeitige Transaktionen beeinflussen sich nicht gegenseitig – jede Transaktion läuft so, als wäre sie allein im System
+		\item Durability: Sobald eine Transaktion abgeschlossen ist, bleiben ihre Änderungen dauerhaft gespeichert, selbst bei Systemausfällen
+	\end{itemize}
+\end{itemize}	
 
-
-\subsection*{Trends}
-\subsubsection*{Data Catalog}
+\subsubsection*{Data Mart}
 \begin{itemize}
-	\item Centralized metadata store for all data across an organization
-	\item Works across operational and analytics data sources, integrate lineage and presentation of data relationships
-	\item Provide a central place where people can view their data, queries, and data storage
+	\item Spezialisierte Teilmenge eines Data Warehouses, die auf die Anforderungen eines bestimmten Fachbereichs zugeschnitten ist. Es verbessert die Performance und Übersichtlichkeit für gezielte Analysen
 \end{itemize}
 
-\subsubsection*{Schema}
+\subsubsection*{Data Mesh}
 \begin{itemize}
-	\item Instructions how to read the data
-	\item Schema on write:
-	\begin{itemize}
-		\item Traditional DW pattern where a table has an integrated schema 
-		\item Any writes to the table must conform
-		\item DL must integrate a schema metastore
-	\end{itemize}
-	\item Schema on read:
-	\begin{itemize}
-		\item Schema is dynamically created when data is written, and a reader must determine the schema when reading the table
-		\item Advantage: Enforces data standards and emphasizes flexibility
-	\end{itemize}
+	\item Dezentraler Ansatz zur Datenarchitektur, bei dem einzelne Teams für ihre eigenen Datenprodukte verantwortlich sind ("Data as a Product")
+	\item Fördert Skalierbarkeit und Eigenverantwortung durch domänenorientierte Datenverwaltung
 \end{itemize}
 
-
-\subsection*{Data Storage Lifecycle and Data Retention}
+\subsubsection*{Datenprodukt}
 \begin{itemize}
-	\item Hot data:
-	\begin{itemize}
-		\item Instant or frequent access requirements
-		\item Fast access and reads
-		\item Most expensive form of storage, but retrieval is inexpensive
-		\item Query results cache: Persisting query results in cache for much faster query response
-	\end{itemize}
-	\item Warm data: Storage is cheaper than hot data, with slightly more expensive retrieval costs
-	\item Cold data:
-	\begin{itemize}
-		\item Infrequently accessed data, e.g., long-term archival
-		\item Cheap storing costs, retrieving data is quite expensive
-	\end{itemize}
-	\item Data retention: What data is needed and how long should it be kept
+	\item Wiederverwendbares, klar definiertes Datenartefakt (Datensatz), das für einen konkreten Anwendungsfall erstellt wird und von anderen leicht konsumiert werden kann
 \end{itemize}
 
+\subsubsection*{ETL}
+\begin{itemize}
+	\item Prozess, bei dem Daten aus verschiedenen Quellen extrahiert, in ein geeignetes Format transformiert und schließlich in ein Zielsystem wie ein Data Warehouse geladen werden
+	\item Dient dazu, Rohdaten für Analysen nutzbar zu machen, indem sie bereinigt, vereinheitlicht und angereichert werden
+	\item Moderne ETL-Prozesse können auch in Echtzeit (Streaming-ETL) oder als ELT-Variante ablaufen, bei der die Transformation nach dem Laden erfolgt
+\end{itemize}
+
+\subsubsection*{ETL Pipeline}
+\begin{itemize}
+	\item Extraktion $ \to $ ADF (Extrahieren von Daten aus verschiedenen Quellen)
+	\item Transform $ \to $ Databricks und Spark (Verarbeiten, bereinigen und anreichern der Daten in skalierbaren Umgebungen)
+	\item Load $ \to $ Snowflake, BigQuery (Laden der transformierten Daten in ein Cloud DWH)
+	\item Orchestrierung $ \to $ Apache Airflow (Steuerung und Automatisierung des Ablaufs der gesamten ETL-Prozesse)
+	\item Montoring $ \to $ Grafana, Azure Monitor (Überwachung von Performance, Ausfällen und Fehlern der Pipeline)
+	\item Data Quality \& Testing $ \to $ Great Expectations (Validieren der Datenqualität durch automatisierte Tests und Regeln)
+\end{itemize}
+
+
+\subsubsection*{Pipeline Montoring}
+\begin{itemize}
+	\item Überwachung von Datenpipelines, Systemen und Prozessen, um sicherzustellen, dass Daten zuverlässig, korrekt und zielgerecht verarbeitet werden
+	\item Fehlererkennung:
+	\begin{itemize}
+		\item Erkennen von fehlgeschlagenen ETL-Jobs
+		\item Identifikation von Datenanomalien
+		\item Monitoring von Datenlatenzen
+	\end{itemize}
+	\item Performance Überwachung:
+	\begin{itemize}
+		\item Laufzeit von Pipelines
+		\item Ressourcenverbrauch
+		\item Datenvolumen und Verarbeitungsraten
+	\end{itemize}
+	\item Sicherstellen der Datenqualität:
+	\begin{itemize}
+		\item Validierung von Daten gegen Regeln
+		\item Schema Überwachung
+	\end{itemize}
+	\item Transparenz und Reporting:
+	\begin{itemize}
+		\item Dashboarding von Metriken (Grafana, Power BI)
+		\item Alerting bei Schwellenwertüberschreitung
+	\end{itemize}
+	\item Beispiele:
+	\begin{itemize}
+		\item Apache Airflow Monitoring: Überwacht den Status von DAGs, ob Tasks fehlschlagen oder hängenbleiben
+		\item Snowflake oder BigQuery Monitoring: Überwachung von Query-Ausführungszeiten und -Kosten
+		\item Streaming Monitoring: Sicherstellen, dass Messages rechtzeitig und vollständig verarbeitet werden
+	\end{itemize}
+\end{itemize}
+
+
+\subsubsection*{Datenmanagement}
+\begin{itemize}
+	\item Übergeordnete Prozess der Erfassung, Speicherung, Organisation, Pflege und Nutzung von Daten in einem Unternehmen
+	\item Umfasst verschiedene Disziplinen wie Data Governance, Datenintegration, Datenqualität, Metadatenmanagement und Archivierung, um den wertschöpfenden Einsatz von Daten sicherzustellen
+	\item Datenintegrität: Zusammenführen und Vereinheitlichung von Daten aus verschiedenen Quellen 
+\end{itemize}
+
+\subsubsection*{Data Governance}
+\begin{itemize}
+	\item Bezeichnet den Rahmen aus Richtlinien, Prozessen und Verantwortlichkeiten, der sicherstellt, dass Daten im Unternehmen korrekt, sicher, einheitlich und regelkonform verwaltet werden
+	\item Umfasst Themen wie Datenqualität, Datenschutz, Zugriffsrechte, Compliance und Datenverantwortung, um Vertrauen und Kontrolle über Daten zu gewährleisten
+\end{itemize}
+
+
+\subsubsection*{Datenqualität}
+\begin{itemize}
+	\item Vollständigkeit $ \to $ Sind alle erforderlichen Datenfelder vorhanden und ausgefüllt?
+	\item Korrektheit $ \to $ Entsprechen die Daten den realen, erwarteten Werten (z.B. stimmen Postleitzahlen mit Städten überein)?
+	\item Konsistenz $ \to $ Sind die Daten in verschiedenen Systemen oder Tabellen widerspruchsfrei (z.B. gleicher Kundennamen in allen Datensätzen)?
+	\item Aktualität $ \to $ Sind die Daten aktuell bzw. zeitgerecht verarbeitet (z.B. keine veralteten Transaktionen im Reporting)?
+	\item Eindeutigkeit $ \to $ Gibt es doppelte Datensätze, wo es keine geben sollte (z.B. doppelte Kunden-IDs)?
+	\item Validität $ \to $ Entsprechen die Daten den erwarteten Formaten oder Regeln (z.B. E-Mail-Adressen im gültigen Format, Zahlen in numerischen Feldern)?
+\end{itemize}
+
+\subsubsection*{CI/CD}
+\begin{itemize}
+	\item CI: Automatisches Testen und Bauen bei jeder Codeänderung
+	\item CDelivery: Automatisches Ausliefern in eine Staging-Umgebung
+	\item CDeployment: Automatisches Ausliefern bis in die Produktion (ohne manuelle Eingriffe)	
+\end{itemize}
+
+\subsubsection*{Data Analytics Konzepte}
+\begin{itemize}
+	\item EDA
+	\item Deskriptive, diagnostische, prädiktive und präskriptive Analysen
+	\item KPI-Tracking: Überwachung von Leistungskennzahlen
+\end{itemize}
+
+\subsubsection*{Dokumentation}
+\begin{itemize}
+	\item Datenquellen:
+	\begin{itemize}
+		\item Herkunft (Systeme, APIs, Dateien)
+		\item Zugriffsmethoden und -rechte
+		\item Aktualisierungsfrequenz
+	\end{itemize}
+	\item ETL-/ELT-Prozesse:
+	\begin{itemize}
+		\item Datenflüsse und Pipeline-Übersichten
+		\item Verwendete Transformationslogik (SQL, dbt, Spark etc.)
+		\item Abhängigkeiten zwischen Schritten
+	\end{itemize}
+	\item Datenmodelle und Schemata:
+	\begin{itemize}
+		\item Tabellen, Views, Spaltenbeschreibungen
+		\item Beziehungen zwischen Entitäten (z.B. ER-Diagramme)
+		\item Versionierung von Modellen
+	\end{itemize}
+	\item Datenqualitätsregeln:
+	\begin{itemize}
+		\item Validierungschecks
+		\item Testdefinitionen (z.B. dbt tests, Great Expectations)
+	\end{itemize}
+	\item Zugriffs- und Sicherheitsrichtlinien:
+	\begin{itemize}
+		\item Rollen und Berechtigungen
+		\item Datenklassifizierung (z.B. PII, öffentlich, vertraulich)
+	\end{itemize}
+	\item Monitoring \& Alerting:
+	\begin{itemize}
+		\item Überwachte Metriken
+		\item Fehlerbehandlung und Wiederanläufe
+		\item SLAs und SLOs
+	\end{itemize}
+	\item Code- und Tool-Dokumentation:
+	\begin{itemize}
+		\item Repos, Technologien, Abhängigkeiten
+		\item Setup-Anleitungen und Deployment-Prozesse
+	\end{itemize}
+\end{itemize}
 
 
 
