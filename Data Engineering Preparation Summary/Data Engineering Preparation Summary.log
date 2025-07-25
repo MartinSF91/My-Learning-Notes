@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.3.6)  1 JUL 2025 21:24
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.3.6)  24 JUL 2025 18:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -628,63 +628,95 @@ LaTeX Font Info:    Trying to load font information for T1+cmss on input line 2
 (c:/texlive/2020/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2019/12/16 v2.5j Standard LaTeX font definitions
 )
-Overfull \hbox (10.06395pt too wide) in paragraph at lines 49--50
+(./Data Engineering Preparation Summary.toc
+LaTeX Font Info:    Trying to load font information for U+msa on input line 3.
+
+(c:/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2013/01/14 v3.01 AMS symbols A
+)
+LaTeX Font Info:    Trying to load font information for U+msb on input line 3.
+
+(c:/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2013/01/14 v3.01 AMS symbols B
+))
+\tf@toc=\write4
+\openout4 = `"Data Engineering Preparation Summary.toc"'.
+
+
+
+LaTeX Font Warning: Font shape `T1/cmr/m/n' in size <149.37698> not available
+(Font)              size <35.83> substituted on input line 26.
+
+[1{c:/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
+
+]
+Overfull \hbox (10.06395pt too wide) in paragraph at lines 57--58
 []\T1/cmr/m/n/10.95 Isolation: Gle-ichzeit-ige Transak-tio-nen bee-in-flussen s
 ich nicht gegen-seitig ^^U jede Transak-
  []
 
 
-Overfull \hbox (1.47603pt too wide) in paragraph at lines 50--51
+Overfull \hbox (1.47603pt too wide) in paragraph at lines 58--59
 []\T1/cmr/m/n/10.95 Durability: Sobald eine Transak-tion abgeschlossen ist, ble
 iben ihre Än-derun-gen dauer-
  []
 
-
-Overfull \hbox (8.01154pt too wide) in paragraph at lines 56--57
-\T1/cmr/m/n/10.95 timmten Fach-bere-ichs zugeschnit-ten ist. Es verbessert die 
-Per-for-mance und Über-sichtlichkeit
- []
-
-
-LaTeX Font Warning: Font shape `T1/cmr/m/n' in size <149.37698> not available
-(Font)              size <35.83> substituted on input line 68.
-
-[1{c:/texlive/2020/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
-
-]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 79.
-
-
-(c:/texlive/2020/texmf-dist/tex/latex/amsfonts/umsa.fd
-File: umsa.fd 2013/01/14 v3.01 AMS symbols A
-)
-LaTeX Font Info:    Trying to load font information for U+msb on input line 79.
-
-
-(c:/texlive/2020/texmf-dist/tex/latex/amsfonts/umsb.fd
-File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-)
-Overfull \hbox (10.00232pt too wide) in paragraph at lines 82--83
-[]\T1/cmr/m/n/10.95 Orchestrierung $\OMS/cmsy/m/n/10.95 !$ \T1/cmr/m/n/10.95 Ap
-ache Air-flow (Steuerung und Au-toma-tisierung des Ablaufs der gesamten
- []
-
 [2]
-Overfull \hbox (31.60822pt too wide) in paragraph at lines 139--140
+Overfull \hbox (31.60822pt too wide) in paragraph at lines 115--116
 []\T1/cmr/m/n/10.95 Korrektheit $\OMS/cmsy/m/n/10.95 !$ \T1/cmr/m/n/10.95 Entsp
 rechen die Daten den realen, er-warteten Werten (z.B. stim-men Postleitzahlen
  []
 
-[3] [4]
+[3]
+Overfull \hbox (23.0319pt too wide) in paragraph at lines 146--147
+[]\T1/cmr/m/n/10.95 Einheitliches Daten-ver-wal-tungssys-tem von Databricks, da
+s Zu-griff-skon-trolle, Daten-Governance
+ []
+
+[4] [5]
+Overfull \hbox (3.81996pt too wide) in paragraph at lines 226--227
+\T1/cmr/m/n/10.95 Data-Analysen und Ma-chine Learn-ing für zu-ver-läs-sige, re-
+pro-duzier-bare Daten-pipelines
+ []
+
+
+Overfull \hbox (16.71779pt too wide) in paragraph at lines 237--238
+[]\T1/cmr/m/n/10.95 Skalierbare und au-toma-tisierte Auf-bere-itung von Merk-ma
+len (Fea-tures) für Machine-Learning-
+ []
+
+
+Overfull \hbox (4.0224pt too wide) in paragraph at lines 238--239
+[]\T1/cmr/m/n/10.95 Data En-gi-neers bauen dafür ro-buste, re-pro-duzier-bare P
+rozesse zur Berech-nung, Spe-icherung
+ []
+
+
+Overfull \hbox (10.00232pt too wide) in paragraph at lines 256--257
+[]\T1/cmr/m/n/10.95 Orchestrierung $\OMS/cmsy/m/n/10.95 !$ \T1/cmr/m/n/10.95 Ap
+ache Air-flow (Steuerung und Au-toma-tisierung des Ablaufs der gesamten
+ []
+
+[6] [7] [8]
+LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 3
+86.
+ (c:/texlive/2020/texmf-dist/tex/latex/base/t1cmtt.fd
+File: t1cmtt.fd 2019/12/16 v2.5j Standard LaTeX font definitions
+) [9]
 
 LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
-(LaTeX3)     236.
+(LaTeX3)     435.
 
 
 LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
-(LaTeX3)     236.
+(LaTeX3)     435.
 
- (./Data Engineering Preparation Summary.aux)
+
+LaTeX3 Info: Redefining command \BeforeClosingMainAux with sig. 'm' on line
+(LaTeX3)     435.
+
+
+(./Data Engineering Preparation Summary.aux)
 
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 113.54698pt have occurred.
@@ -694,25 +726,28 @@ has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 14792 strings out of 479023
- 248966 string characters out of 5863351
- 717640 words of memory out of 5000000
- 32041 multiletter control sequences out of 15000+600000
- 412288 words of font info for 51 fonts, out of 8000000 for 9000
+ 14930 strings out of 479023
+ 251684 string characters out of 5863351
+ 719640 words of memory out of 5000000
+ 32142 multiletter control sequences out of 15000+600000
+ 414834 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 111i,12n,116p,10654b,546s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 111i,12n,116p,10654b,544s stack positions out of 5000i,500n,10000p,200000b,80000s
 {c:/texlive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}{c:/texl
 ive/2020/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}<c:/texlive/2020/
 texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2020/texmf-dis
 t/fonts/type1/public/cm-super/sfbx1095.pfb><c:/texlive/2020/texmf-dist/fonts/ty
 pe1/public/cm-super/sfrm1095.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public
 /cm-super/sfrm3583.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/
-sfsx1095.pfb>
-Output written on "Data Engineering Preparation Summary.pdf" (4 pages, 77297 by
-tes).
+sfsx1095.pfb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfsx1200.p
+fb><c:/texlive/2020/texmf-dist/fonts/type1/public/cm-super/sfsx1440.pfb><c:/tex
+live/2020/texmf-dist/fonts/type1/public/cm-super/sfti1095.pfb><c:/texlive/2020/
+texmf-dist/fonts/type1/public/cm-super/sftt1095.pfb>
+Output written on "Data Engineering Preparation Summary.pdf" (9 pages, 175145 b
+ytes).
 PDF statistics:
- 69 PDF objects out of 1000 (max. 8388607)
- 57 compressed objects within 1 object stream
- 21 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 286 PDF objects out of 1000 (max. 8388607)
+ 263 compressed objects within 3 object streams
+ 48 named destinations out of 1000 (max. 500000)
+ 297 words of extra memory for PDF output out of 10000 (max. 10000000)
 
