@@ -1,23 +1,19 @@
 
 \documentclass[11pt]{scrartcl}
-\usepackage{graphicx}
 \usepackage{amsmath, amssymb, textcomp}
 \usepackage[utf8]{inputenc}
-\usepackage[english]{babel}
+\usepackage[ngerman]{babel}
 \usepackage{ucs}
 \usepackage[T1]{fontenc}
-\usepackage{subcaption} 		% Subfigures
-\usepackage{hyperref}
 \usepackage{fullpage}	
-\usepackage{color}
 \usepackage{enumitem}
 \setlist[itemize]{noitemsep, topsep=1pt}
-\usepackage[font=footnotesize]{caption}
 \usepackage{draftwatermark}
 \SetWatermarkText{Martin Fané}
 \SetWatermarkScale{3}
-\SetWatermarkColor[gray]{0.99}
-\usepackage[numindex,nottoc,section]{} 
+\SetWatermarkColor[gray]{0.97}
+\renewcommand\familydefault{\sfdefault}
+
 
 
 \begin{document}
@@ -29,6 +25,7 @@
 \begin{itemize}
 	\item Ein Data Lake ist ein zentrales Repository, das strukturierte, semi-strukturierte und unstrukturierte Rohdaten in großem Umfang speichert
 	\item Eignet sich besonders für Big-Data-Analysen und Machine Learning, erfordert aber zusätzliche Verarbeitung zur Datennutzung
+	\item Beispiel: Amazon S3
 \end{itemize}
 
 
@@ -36,12 +33,13 @@
 \begin{itemize}
 	\item Ein Data Warehouse ist ein zentrales, strukturiertes System zur langfristigen Speicherung und Analyse großer Datenmengen aus verschiedenen Quellen
 	\item Optimiert für komplexe Abfragen und Business-Intelligence-Anwendungen
+	\item Beispiel: MS SQL Server
 \end{itemize}
 
 
 \subsection{Cloud Data Warehouse}
 \begin{itemize}
-	\item Ein Cloud Data Warehouse ist ein Data Warehouse, das in der Cloud gehostet wird und dadurch flexibel skalierbar und wartungsarm ist
+	\item Ein Cloud Data Warehouse ist ein Data Warehouse, das in der Cloud gehostet wird (keine eigene Infrastruktur notwendig) und dadurch flexibel skalierbar und wartungsarm ist
 	\item Beispiele: Snowflake, Google BigQuery oder Amazon Redshift
 \end{itemize}
 
@@ -57,6 +55,7 @@
 		\item Isolation: Gleichzeitige Transaktionen beeinflussen sich nicht gegenseitig – jede Transaktion läuft so, als wäre sie allein im System
 		\item Durability: Sobald eine Transaktion abgeschlossen ist, bleiben ihre Änderungen dauerhaft gespeichert, selbst bei Systemausfällen
 	\end{itemize}
+	\item Beispiel: Databricks
 \end{itemize}
 
 
@@ -64,6 +63,17 @@
 \begin{itemize}
 	\item Open-Source-Storage-Schicht, die auf Data Lakes (z.B. in S3 oder Azure Blob Storage) aufsetzt und Funktionen wie ACID-Transaktionen, Schema-Management, Zeitreisen (Versionierung) und verlässliche Upserts/Merges bietet
 	\item Damit macht Delta Lake rohe Data Lakes zuverlässiger, konsistenter und besser für Analytics und Machine Learning geeignet – indem es typische Probleme von Data Lakes (wie inkonsistente Daten oder fehlende Transaktionen) löst. Es wird oft mit Apache Spark und Databricks genutzt
+	\item Schema Enforcement:
+	\begin{itemize}
+		\item Stellt sicher, dass neue Daten, die in eine Delta-Tabelle geschrieben werden, dem bestehenden Tabellenschema entsprechen
+		\item Dadurch werden fehlerhafte oder inkonsistente Daten (z.B. falsche Datentypen oder fehlende Spalten) automatisch abgelehnt, um Datenqualität und Konsistenz zu gewährleisten
+	\end{itemize}
+	\item Time Travel:
+	\begin{itemize}
+		\item Ermöglicht den Zugriff auf frühere Versionen einer Tabelle, indem man einen bestimmten Zeitpunkt oder Versionsnummer angibt
+		\item Historische Daten analysieren, vergleichen, Wiederherstellungen durchführen oder versehentliche Änderungen rückgängig machen
+	\end{itemize}
+	\item Beispiel: Delta Lake on Databricks
 \end{itemize}	
 
 
@@ -71,6 +81,7 @@
 \begin{itemize}
 	\item Spezialisierte Teilmenge eines Data Warehouses, die auf die Anforderungen eines bestimmten Fachbereichs zugeschnitten ist
 	\item Verbessert die Performance und Übersichtlichkeit für gezielte Analysen
+	\item Beispiel: Amazon Redshift Data Mart
 \end{itemize}
 
 
@@ -94,6 +105,7 @@
 \end{itemize}
 
 
+\newpage
 \section{Datenmanagement}
 \begin{itemize}
 \item Übergeordnete Prozess der Erfassung, Speicherung, Organisation, Pflege und Nutzung von Daten in einem Unternehmen
@@ -112,11 +124,11 @@
 \subsection{Datenqualität}
 \begin{itemize}
 \item Vollständigkeit $ \to $ Sind alle erforderlichen Datenfelder vorhanden und ausgefüllt?
-\item Korrektheit $ \to $ Entsprechen die Daten den realen, erwarteten Werten (z.B. stimmen Postleitzahlen mit Städten überein)?
-\item Konsistenz $ \to $ Sind die Daten in verschiedenen Systemen oder Tabellen widerspruchsfrei (z.B. gleicher Kundennamen in allen Datensätzen)?
-\item Aktualität $ \to $ Sind die Daten aktuell bzw. zeitgerecht verarbeitet (z.B. keine veralteten Transaktionen im Reporting)?
-\item Eindeutigkeit $ \to $ Gibt es doppelte Datensätze, wo es keine geben sollte (z.B. doppelte Kunden-IDs)?
-\item Validität $ \to $ Entsprechen die Daten den erwarteten Formaten oder Regeln (z.B. E-Mail-Adressen im gültigen Format, Zahlen in numerischen Feldern)?
+\item Korrektheit $ \to $ Entsprechen die Daten den realen, erwarteten Werten (z.B. stimmen Postleitzahlen mit Städten überein)
+\item Konsistenz $ \to $ Sind die Daten in verschiedenen Systemen oder Tabellen widerspruchsfrei (z.B. gleicher Kundennamen in allen Datensätzen)
+\item Aktualität $ \to $ Sind die Daten aktuell bzw. zeitgerecht verarbeitet (z.B. keine veralteten Transaktionen im Reporting)
+\item Eindeutigkeit $ \to $ Gibt es doppelte Datensätze, wo es keine geben sollte (z.B. doppelte Kunden-IDs)
+\item Validität $ \to $ Entsprechen die Daten den erwarteten Formaten oder Regeln (z.B. E-Mail-Adressen im gültigen Format, Zahlen in numerischen Feldern)
 \end{itemize}
 
 
@@ -154,7 +166,7 @@
 \item Ermöglicht konsistente und effiziente Bereitstellung von Features sowohl für das Training als auch für die Echtzeit-Vorhersage in produktiven ML-Systemen
 \end{itemize}
 
-
+\newpage
 \section{Daten}
 \subsection{Datenprodukt}
 \begin{itemize}
@@ -210,7 +222,7 @@
 		\item Spaltenbasiertes Speicherformat
 		\item Komprimiert und effizient für Analyse-Workloads
 	\end{itemize}
-	\item CVS:
+	\item CSV:
 	\begin{itemize}
 		\item Einfaches, textbasiertes Format
 		\item Weit verbreitet, aber keine Schema- oder Typinformation
@@ -239,6 +251,7 @@
 \end{itemize}
 
 
+\newpage
 \section{Daten Pipeline}
 \subsection{ETL}
 \begin{itemize}
@@ -322,8 +335,8 @@
 	\item KPI-Tracking: Überwachung von Leistungskennzahlen
 \end{itemize}
 
-
-\subsection{Dokumentation}
+\newpage
+\section{Dokumentation}
 \begin{itemize}
 	\item Datenquellen:
 	\begin{itemize}
@@ -366,40 +379,238 @@
 	\end{itemize}
 \end{itemize}
 
+
+\newpage
+\section{Batch vs. Streaming Processing}
+\subsection{Batch Processing}
+\begin{itemize}
+	\item Verarbeitet statische Datenmengen in festen Zeitabständen oder auf Abruf
+	\item Daten liegen vollständig vor, bevor sie verarbeitet werden
+	\item Höhere Latenz, dafür oft einfachere Verarbeitung und Fehlerbehandlung
+	\item Gut geeignet für regelmäßige Reports, ETL-Prozesse, Backfills
+	\item Beispiele: Spark Batch, Hadoop MapReduce, SQL-Jobs
+\end{itemize}
+
+\subsection{Wann Batch Processing besser ist}
+\begin{itemize}
+	\item Arbeiten mit großen Datenmengen in regelmäßigen Abständen (z.B. täglich, stündlich)
+	\item Echtzeitreaktion nicht notwendig ist (z.B. Reporting, Data Warehousing, Archivierung)
+	\item Komplexe Analysen oder Aggregationen auf vollständigen Datensätzen 
+	\item Datenqualität, Wiederholbarkeit und Genauigkeit wichtiger sind als Geschwindigkeit
+\end{itemize}
+
+\subsection{Streaming Processing}
+\begin{itemize}
+	\item Verarbeitet Daten kontinuierlich und nahezu in Echtzeit
+	\item Daten werden direkt bei Eintreffen verarbeitet
+	\item Geringe Latenz, dafür komplexer in Fehlerhandling und Zustandsverwaltung
+	\item Ideal für Echtzeitanalysen, Monitoring, Betrugserkennung, IoT
+	\item Beispiele: Spark Structured Streaming, Apache Flink, Kafka Streams
+\end{itemize}
+
+\subsection{Wann Streaming Processing besser ist}
+\begin{itemize}
+	\item Auf Ereignisse muss sofort reagiert werden (z.B. Alarme, Benachrichtigungen, Live-Metriken)
+	\item Daten kontinuierlich einlaufen (z.B. Logdaten, Sensoren, Webtraffic)
+	\item Niedrige Latenz (Echtzeit oder Near-Real-Time)
+	\item Laufendes Überwachen oder Steuern von Systemen
+\end{itemize}
+
+
 \newpage
 \section{Spark}
 \subsection{Basics}
 \begin{itemize}
-	\item Open Source computing engine for parallel data processing on computer Clusters
-	\item Cluster (Group) of computers pools the resources of many machines together to use all cumulative resources as if they were a single computer
-	\item Spark manages and coordinates the execution of tasks on data across a Cluster of computers
-	\item Cluster of machines is managed by a Cluster Manager like YARN, or Mesos
-	\item A Spark Application is submitted to these Cluster Managers, which will grant resources to the application
+	\item Open Source computing engine for parallel data processing on computer clusters
+	\item Cluster of computers pools the resources of many machines together to use all cumulative resources as if they were a single computer
+	\item A Spark application is submitted to these cluster managers which will grant resources to the application
 \end{itemize}
 
 \subsection{Spark Application}
 \begin{itemize}
-	\item Spark Applications consists of a Driver process and a set of Executor processes
+	\item Spark applications consists of a driver process and a set of executor processes
 	\item Driver:
 	\begin{itemize}
 		\item Creates SparkContext and SparkSession
-		\item Runs the \texttt{main()} function, sits on a Node in the Cluster, and is responsible for three things:
+		\item Runs the \texttt{main()} function, sits on a node in the cluster, and is responsible for three things:
 		\begin{itemize}
-			\item Maintaining information about the Spark Application
-			\item Responding to a user’s program or input
-			\item Analyzing, distributing, and scheduling work across the Executors
+			\item Maintaining information about the Spark application
+			\item Responding to a user's program or input
+			\item Analyzing, distributing, and scheduling work across the executors
 		\end{itemize}
-	\item The Driver process is the heart of the Spark Application and maintains all relevant information during the lifetime of the application
+	\item The Driver process is the heart of the Spark application and maintains all relevant information during the lifetime of the application
 	\end{itemize}
-	\item Executor (on Worker Node):
+	\item Executor (on worker node):
 	\begin{itemize}
-		\item Responsible for carrying out the work that the Driver assigns them
-		\item Each Executor is responsible for 2 things:
+		\item Responsible for carrying out the work that the driver assigns them
+		\item Each executor is responsible for 2 things:
 		\begin{itemize}
-			\item Executing code in parallel (one per Executor Core) assigned to it by the Driver
-			\item Reporting the state of computation on that Executor back to the Driver
+			\item Executing code in parallel (one per executor core) assigned to it by the driver
+			\item Reporting the state of computation on that executor back to the driver
 		\end{itemize}
 	\end{itemize}
+\end{itemize}
+
+\subsection{Lazy Evaluation}
+\begin{itemize}
+	\item Spark waits until the very last moment to execute the graph (DAG) of computation instructions
+	\item In Spark, a plan of transformations (DAG) is built up that is to be applied to the data rather than modifying the data immediately
+	\item By waiting, Spark compiles this plan from the raw DataFrame transformations to a streamlined physical plan (DAG) that will run as efficiently as possible across the cluster
+	\item As result, Spark can optimize the entire data flow from end to end (predicate pushdown)
+\end{itemize}
+
+\subsection{DAG}
+\begin{itemize}
+	\item Logical representation of a Spark computation
+	\item Consists of a series of transformations (narrow/wide) applied to a DataFrame
+	\item Ensures that computations are structured efficiently and executed in the right order
+\end{itemize}
+
+\subsection{Transformation}
+\begin{itemize}
+	\item Operation creating a new DataFrame from an existing one
+	\item Transformations = logical transformation plan (DAG)
+	\item Narrow transformations:
+	\begin{itemize}
+		\item Operation where each partition is used by at most one partition in the output
+		\item No data shuffling between nodes, thus more efficient (e.g., \texttt{filter()})
+		\item Executed in a single stage
+	\end{itemize}
+	\item Wide Transformations:
+	\begin{itemize}
+		\item Operation where data from one partition is used by multiple partitions in the output
+		\item Require data shuffling across nodes, thus expensive (e.g., \texttt{groupBy()})
+		\item Create new stage in the DAG
+	\end{itemize}
+\end{itemize}
+
+\subsection{Action}
+\begin{itemize}
+	\item Action = triggers the computation
+	\item An action instructs Spark to compute a result from a series of transformations (e.g., \texttt{count()})
+	\item Every action starts a new job
+\end{itemize}
+
+\subsection{Job}
+\begin{itemize}
+	\item Series of parallel transformations and actions (complete computations) performed on a DataFrame, triggered by an action
+	\item Operate on partitions of the DataFrame
+	\item Consists of:
+	\begin{itemize}
+		\item Stages $ \to $ each job is divided into multiple stages (set of operations)
+		\item Tasks $ \to $ each stage consists of multiple tasks running in parallel on executor cores
+	\end{itemize}
+\end{itemize}
+
+\subsection{Stage}
+\begin{itemize}
+	\item Collection of parallel tasks separated by shuffle boundaries
+	\item Narrow transformations can be executed in the same stage
+	\item Wide transformations require data shuffling and create new stages
+\end{itemize}
+
+\subsection{Task}
+\begin{itemize}
+	\item Each Task runs on and processes one partition of the data
+\end{itemize}
+
+\subsection{Partition}
+\begin{itemize}
+	\item To allow every executor to perform work in parallel, Spark breaks up the data into partitions
+	\item Partition: Collection of rows that sit on one physical machine in the cluster
+	\item Represents how the data is physically distributed across the cluster of machines during execution
+	\item One partition = parallelism of one
+	\item Many partitions but only one executor = parallelism of one
+\end{itemize}
+
+\newpage
+\subsection{Summary}
+\begin{itemize}
+	\item SparkContext:
+	\begin{itemize}
+		\item Core entry point for Spark operations
+		\item Created automatically inside a SparkSession
+	\end{itemize}
+	\item SparkSession:
+	\begin{itemize}
+		\item Entry point for a Spark application
+		\item Provides access to DataFrames, datasets, and SQL functionality
+		\item Created using: \texttt{SparkSession.builder.appName().getOrCreate()}
+	\end{itemize}
+	\item Cluster:
+	\begin{itemize}
+		\item Group of interconnected machines (nodes) working together to process large-scale data in parallel
+		\item Managed by cluster manager like YARN, Kubernetes, or Mesos
+	\end{itemize}
+	\item Node: 
+	\begin{itemize}
+		\item Virtual or physical machine in the cluster
+	\end{itemize}
+	\item Driver node:
+	\begin{itemize}
+		\item Virtual or physical machine where the driver runs
+		\item Central coordinator of a Spark application
+		\item Creates SparkContext, schedules tasks, and collects results from executors
+		\item Allocates resources to executors
+		\item Converts Spark code into a DAG of tasks
+	\end{itemize}
+	\item Driver core:
+	\begin{itemize}
+		\item Controls how many CPU cores are allocated to the Spark driver for managing the Spark application and scheduling tasks
+	\end{itemize}
+	\item Driver memory:
+	\begin{itemize}
+		\item RAM allocated to the Spark driver for storing metadata, job information, and small collected results
+	\end{itemize}
+	\item Worker node:
+	\begin{itemize}
+		\item Virtual or physical machine in the cluster that contains and runs multiple executors to process data in parallel
+	\end{itemize}
+	\item Executor:
+	\begin{itemize}
+		\item Process running on a worker node
+		\item Responsible for executing tasks and storing intermediate data in memory or disk
+	\end{itemize}
+	\item Executor core:
+	\begin{itemize}
+		\item Number of CPU cores allocated to each executor
+		\item Defines how many Tasks an executor can run in parallel
+	\end{itemize}
+	\item Executor memory:
+	\begin{itemize}
+		\item RAM allocated to each executor for performing computations and storing cached data
+	\end{itemize}
+\end{itemize}
+
+\subsection{Spark vs. Python}
+\subsubsection{Python}
+\begin{itemize}
+	\item Für kleine bis mittelgroße Datenmengen, die in den lokalen Speicher passen
+	\item Bei schnellen Analysen, Exploration und Prototyping
+	\item Wenn viele Bibliotheken (z.B. Pandas, NumPy, scikit-learn) gebraucht werden
+	\item Ideal für lokale Entwicklungsumgebungen und Skripting 
+\end{itemize}
+
+\subsubsection{Spark}
+\begin{itemize}
+	\item Bei sehr großen Datenmengen, die nicht in den Arbeitsspeicher passen
+	\item Wenn Daten verteilt verarbeitet oder aus verteilten Quellen gelesen werden sollen
+	\item Für skalierbare ETL-Prozesse, Datenpipelines oder wiederkehrende Batch-Jobs
+	\item In Cluster-Umgebungen (z.B. Databricks, EMR, Kubernetes) mit mehreren Knoten
+\end{itemize}
+
+
+\section{Clean Code}
+\begin{itemize}
+	\item Aussagekräftige Namen verwenden: Variablen, Funktionen und Klassen sollten klar und präzise beschreiben, was sie tun 
+	\item Funktionen klein und fokussiert halten: Jede Funktion sollte nur eine Aufgabe erfüllen, z.B. eine Transformation in Spark oder eine bestimmte Berechnung
+	\item Code modularisieren und wiederverwenden: Wiederkehrende Logik in Funktionen oder Klassen auslagern, um Duplikate zu vermeiden (z.B. wiederverwendbare UDFs in Spark)
+	\item Kommentare und Docstrings nutzen: Komplexe Logik mit kurzen Kommentaren erklären und Funktionen mit Docstrings dokumentieren (speziell bei Transformationen)
+	\item Vermeiden magischer Zahlen und Strings: Statt harte Werte direkt im Code zu nutzen, Konstanten definieren und gut benennen
+	\item Fehlerbehandlung sinnvoll einbauen: Ausnahmen abfangen, aber nicht still ignorieren; klare Fehlermeldungen geben
+	\item DataFrame-Operationen lesbar schreiben: Ketten von Spark-Transformationen klar strukturieren, z.B. jede Operation in einer neuen Zeile
+	\item Vermeiden zu komplexer Verschachtelungen:	Schreibe lieber mehrere einfache Schritte als einen langen komplexen Block
+	\item Teste kritische Transformationen: Nutzen von Unit-Tests oder kleine Integrationstests, um Datenqualität sicherzustellen (z.B. mit pytest und Spark Testing Base)
 \end{itemize}
 
 
